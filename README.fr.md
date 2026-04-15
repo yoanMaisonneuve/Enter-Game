@@ -118,14 +118,32 @@ Non négociables. Ils existent parce que le modèle **va** accepter une instruct
 
 ---
 
+## Entrer dans le jeu · 5 niveaux
+
+Le protocole livre une progression — chaque niveau retire une couche de friction entre l'idée et le commit. Voir [LEVELS.md](LEVELS.md) pour le détail.
+
+1. **N1** · Téléphone + Claude (copier-coller manuel)
+2. **N2** · GitHub Codespaces (IDE dans le browser)
+3. **N2.5** · **Enter the Game Hub** — le fichier [`index.html`](index.html) de ce repo. Publié sur `yoanmaisonneuve.github.io/enter-game`. Épinglé sur l'écran d'accueil du téléphone. Capture une idée, push vers n'importe lequel de tes repos, zéro terminal.
+4. **N3** · Claude Dispatch (Computer Use, mains libres voix → desktop)
+5. **N4** · VPS / cluster OVH (Claude sur infra always-on)
+6. **N5** · Agents autonomes (mandat + budget plafonné)
+
+Le jeu se joue à l'intersection de deux courbes — la machine qui monte en niveau, et l'humain qui apprend à déléguer. Voir la note *Human Adoption Bottleneck* dans LEVELS.md.
+
+---
+
 ## Ce que contient ce repo
 
 - [`README.md`](README.md) — version anglaise
 - [`README.fr.md`](README.fr.md) — ce fichier
+- [`LEVELS.md`](LEVELS.md) — la progression N1 → N5
+- [`index.html`](index.html) — le **Enter the Game Hub**, app de capture N2.5 (tourne sur GitHub Pages)
 - [`PIPELINE.md`](PIPELINE.md) — l'architecture complète Grain → Action
 - [`EXTERNAL-CONDITION-CONTEXT.md`](EXTERNAL-CONDITION-CONTEXT.md) — la couche interface (aujourd'hui : casque ; demain : BCI)
 - [`LICENSE`](LICENSE) — MIT
 - `ideas/` — captures append-only de sessions voice
+- `.github/workflows/pages.yml` — déploiement GitHub Pages
 
 ---
 
@@ -160,10 +178,26 @@ Forke, adapte, transforme. Un crédit est apprécié. Une obligation, non.
 
 ---
 
+## Publier le Hub sur GitHub Pages
+
+Le fichier `index.html` est une app web autonome. Pour en faire ta surface de capture permanente :
+
+1. **Settings → Pages** sur ton fork
+2. Sous *Build and deployment*, choisis **GitHub Actions** (le workflow `.github/workflows/pages.yml` fait le reste)
+3. Attends le premier run vert
+4. Ouvre `https://<ton-nom>.github.io/enter-game/`
+5. Onglet **Config** → colle ton username GitHub, un PAT fine-grained avec scope `Contents: write`, la liste de tes repos, ton nom et ton email d'auteur
+6. Sur Android : Chrome → ⋮ → *Ajouter à l'écran d'accueil*. Sur iOS : Safari → Partager → *Sur l'écran d'accueil*. Tu as maintenant une app hub.
+
+**Note sécurité.** Le code source du hub est public. Le token est stocké uniquement dans le `localStorage` de ton navigateur — jamais envoyé à un serveur tiers. Traite-le comme une clé imprimée sur papier : ne partage pas ton écran sur l'onglet Config, et révoque/tourne le PAT à volonté depuis `github.com/settings/tokens`.
+
+---
+
 ## Statut
 
 - **v1 · avril 2026** — structure en place, docs publiés, premier cas d'usage réel (EasyRead + aski01 + infra privée)
-- Suite : traduction bilingue complète des docs foundational · repo de templates · études de cas publiques
+- **v1.1 · avril 2026** — app HTML Hub + doc LEVELS + déploiement Pages
+- Suite : traduction bilingue complète des docs foundational · repo de templates · études de cas publiques · mode optionnel N3 Claude-in-the-loop pour le Hub
 
 Maintainer : [Yoan Maisonneuve](https://github.com/yoanMaisonneuve).
 
