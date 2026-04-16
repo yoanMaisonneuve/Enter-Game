@@ -53,6 +53,21 @@ A specific prompt with a concrete example beats a generic one. Always give the t
 
 ---
 
+## Protocol Documents — Start Here / Documents du Protocole — Commencer Ici
+
+Six self-contained documents. A fork of this repo can reconstruct the full system from these six files alone.
+
+| Document | What it teaches |
+|---|---|
+| [`POWERUSER.md`](POWERUSER.md) | State of the art 2026 — the 8 unofficial power-user practices, the gap between mainstream / advanced / frontier, and the N3→N5 progression table. Read this first. |
+| [`README_agents.md`](README_agents.md) | The 7-agent pipeline (Planner → Researcher → Analyst → Builder → Reviewer → Archivist → MetaObserver) — role, inputs, outputs, and activation patterns for each agent. Dev and non-dev branches. |
+| [`README_memory.md`](README_memory.md) | The 4-layer memory architecture (L1 CONTEXT → L2 RECENT → L3 projects → L4 ARCHIVE), the upgrade path from basic to hybrid (pgvector + Mem0), and the session handoff protocol. |
+| [`README_workflow.md`](README_workflow.md) | The temporal protocol: daily execution → weekly review → monthly audit → quarterly direction → annual upgrade → 5/10/15-year mission. The full CAPS+G principles. |
+| [`README_voicefirst.md`](README_voicefirst.md) | The 5-step voice protocol (input → structuring → dispatch → execution → feedback), the two modes (voice-first vs text-first), and a reproducible setup for anyone to implement it. |
+| [`README_flywheel.md`](README_flywheel.md) | The propagation-by-proof distribution mechanism — how each user becomes a distribution node, the 4 flywheel components, metrics, and the link to the protocol's deeper mission. |
+
+---
+
 ## The pipeline
 
 ```
@@ -135,12 +150,23 @@ The game is played at the intersection of two curves — the machine leveling up
 
 ## What this repo contains
 
+**Protocol documents (v1.0 — April 2026):**
+- [`POWERUSER.md`](POWERUSER.md) — power-user state of the art, 8 unofficial practices, N3→N5 table (EN+FR)
+- [`README_agents.md`](README_agents.md) — 7-agent pipeline, full specs, dev + non-dev branches
+- [`README_memory.md`](README_memory.md) — 4-layer memory architecture, hybrid upgrade, handoff protocol
+- [`README_workflow.md`](README_workflow.md) — daily → 15-year temporal protocol, CAPS+G principles
+- [`README_voicefirst.md`](README_voicefirst.md) — 5-step voice protocol, dispatch logic, reproducible setup
+- [`README_flywheel.md`](README_flywheel.md) — propagation-by-proof distribution mechanism
+
+**Foundation:**
 - [`README.md`](README.md) — this file (EN)
 - [`README.fr.md`](README.fr.md) — French version
 - [`LEVELS.md`](LEVELS.md) — the 5-level progression (L1 → L5)
-- [`index.html`](index.html) — the **Enter the Game Hub**, L2.5 idea-capture app (runs on GitHub Pages)
 - [`PIPELINE.md`](PIPELINE.md) — the full Grain → Action architecture
 - [`EXTERNAL-CONDITION-CONTEXT.md`](EXTERNAL-CONDITION-CONTEXT.md) — the interface layer (today: headset; tomorrow: BCI)
+
+**Tools:**
+- [`index.html`](index.html) — the **Enter the Game Hub**, L2.5 idea-capture app (runs on GitHub Pages)
 - [`LICENSE`](LICENSE) — MIT
 - `ideas/` — append-only voice captures from live sessions
 - `.github/workflows/pages.yml` — GitHub Pages deployment
@@ -197,7 +223,8 @@ The `index.html` in this repo is a standalone web app. To make it your always-on
 
 - **v1 · April 2026** — structure live, docs published, first real use case (EasyRead + aski01 + private infra)
 - **v1.1 · April 2026** — Hub HTML app + LEVELS doc + Pages deployment
-- Next: bilingual translation of all foundational docs · templates repo · public case studies · optional L3 Claude-in-the-loop mode for the Hub
+- **v1.2 · April 2026** — 6 core protocol documents added: POWERUSER + 5 README files (agents, memory, workflow, voicefirst, flywheel)
+- Next: templates repo · public case studies · bilingual protocol docs · Enter-Game template repo (fork-and-go)
 
 Maintainer: [Yoan Maisonneuve](https://github.com/yoanMaisonneuve).
 
