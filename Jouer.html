@@ -1,0 +1,1278 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Enter-Game — Jouer / Play</title>
+<style>
+  :root {
+    --bg: #0a0a0a;
+    --bg2: #111111;
+    --bg3: #1a1a1a;
+    --border: #222222;
+    --accent: #00e87a;
+    --accent2: #00b85f;
+    --text: #e8e8e8;
+    --muted: #666666;
+    --muted2: #444444;
+    --user-bg: #0d2016;
+    --agent-bg: #111111;
+    --radius: 10px;
+    --font: 'JetBrains Mono', 'Fira Code', 'Cascadia Code', 'Consolas', monospace;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--font);
+    font-size: 14px;
+    line-height: 1.6;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* ── Header ── */
+  #header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 14px 20px;
+    border-bottom: 1px solid var(--border);
+    background: var(--bg);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+
+  #logo {
+    font-size: 13px;
+    color: var(--accent);
+    letter-spacing: 0.05em;
+    font-weight: 600;
+  }
+
+  #logo span { color: var(--muted); font-weight: 400; }
+
+  #lang-toggle {
+    display: flex;
+    gap: 4px;
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    overflow: hidden;
+  }
+
+  .lang-btn {
+    background: none;
+    border: none;
+    color: var(--muted);
+    font-family: var(--font);
+    font-size: 12px;
+    padding: 5px 12px;
+    cursor: pointer;
+    transition: all 0.15s;
+    letter-spacing: 0.05em;
+  }
+
+  .lang-btn.active {
+    background: var(--accent);
+    color: #000;
+    font-weight: 700;
+  }
+
+  /* ── Progress ── */
+  #progress-bar {
+    height: 2px;
+    background: var(--bg3);
+    position: sticky;
+    top: 49px;
+    z-index: 99;
+  }
+
+  #progress-fill {
+    height: 100%;
+    background: var(--accent);
+    transition: width 0.4s ease;
+    width: 0%;
+  }
+
+  #progress-label {
+    position: absolute;
+    right: 16px;
+    top: 6px;
+    font-size: 11px;
+    color: var(--muted);
+  }
+
+  /* ── Main layout ── */
+  #main {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    max-width: 720px;
+    margin: 0 auto;
+    width: 100%;
+    padding: 0 16px;
+  }
+
+  /* ── Welcome screen ── */
+  #welcome-screen {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: calc(100vh - 52px);
+    text-align: center;
+    padding: 40px 20px;
+  }
+
+  .tagline-big {
+    font-size: clamp(18px, 3vw, 28px);
+    color: var(--accent);
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    margin-bottom: 8px;
+  }
+
+  .tagline-sub {
+    color: var(--muted);
+    font-size: 13px;
+    margin-bottom: 48px;
+  }
+
+  .welcome-desc {
+    color: var(--muted);
+    font-size: 13px;
+    max-width: 460px;
+    margin-bottom: 40px;
+    line-height: 1.7;
+  }
+
+  .welcome-desc strong { color: var(--text); }
+
+  .lang-choice {
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .lang-start-btn {
+    background: none;
+    border: 1px solid var(--border);
+    color: var(--text);
+    font-family: var(--font);
+    font-size: 14px;
+    padding: 14px 32px;
+    border-radius: var(--radius);
+    cursor: pointer;
+    transition: all 0.2s;
+    letter-spacing: 0.03em;
+  }
+
+  .lang-start-btn:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+    background: rgba(0, 232, 122, 0.04);
+  }
+
+  .lang-start-btn.primary {
+    border-color: var(--accent);
+    color: var(--accent);
+  }
+
+  /* ── Chat area ── */
+  #chat-screen { display: none; flex-direction: column; padding-bottom: 20px; }
+
+  #messages {
+    flex: 1;
+    padding: 24px 0 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .msg {
+    display: flex;
+    gap: 12px;
+    animation: fadeUp 0.25s ease;
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(8px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  .msg-avatar {
+    width: 28px;
+    height: 28px;
+    border-radius: 6px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    font-weight: 700;
+    margin-top: 2px;
+  }
+
+  .msg.agent .msg-avatar { background: rgba(0,232,122,0.12); color: var(--accent); }
+  .msg.user  .msg-avatar { background: rgba(255,255,255,0.06); color: var(--muted); }
+
+  .msg-body { flex: 1; }
+
+  .msg-name {
+    font-size: 10px;
+    color: var(--muted);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 4px;
+  }
+
+  .msg.agent .msg-name { color: var(--accent2); }
+
+  .msg-bubble {
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    border-radius: 0 var(--radius) var(--radius) var(--radius);
+    padding: 12px 16px;
+    font-size: 14px;
+    line-height: 1.65;
+  }
+
+  .msg.user .msg-bubble {
+    background: var(--user-bg);
+    border-color: rgba(0,232,122,0.12);
+    border-radius: var(--radius) var(--radius) var(--radius) 0;
+    color: var(--accent);
+  }
+
+  .block-label {
+    font-size: 10px;
+    color: var(--muted2);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    text-align: center;
+    padding: 8px 0 4px;
+  }
+
+  /* ── Input area ── */
+  #input-area {
+    padding: 16px 0 24px;
+    border-top: 1px solid var(--border);
+    background: var(--bg);
+    position: sticky;
+    bottom: 0;
+  }
+
+  .question-label {
+    font-size: 11px;
+    color: var(--muted);
+    letter-spacing: 0.08em;
+    margin-bottom: 8px;
+  }
+
+  /* Text input */
+  .text-input-wrap { display: flex; gap: 8px; }
+
+  .text-input {
+    flex: 1;
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    color: var(--text);
+    font-family: var(--font);
+    font-size: 14px;
+    padding: 12px 16px;
+    outline: none;
+    transition: border-color 0.15s;
+  }
+
+  .text-input:focus { border-color: var(--accent); }
+  .text-input::placeholder { color: var(--muted2); }
+
+  textarea.text-input {
+    resize: vertical;
+    min-height: 72px;
+  }
+
+  /* Options (radio / choice) */
+  .options-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 12px;
+  }
+
+  .opt-btn {
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    color: var(--muted);
+    font-family: var(--font);
+    font-size: 13px;
+    padding: 8px 16px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+
+  .opt-btn:hover  { border-color: var(--muted2); color: var(--text); }
+  .opt-btn.active { border-color: var(--accent); color: var(--accent); background: rgba(0,232,122,0.06); }
+
+  /* Checkbox list */
+  .checkbox-list { display: flex; flex-direction: column; gap: 6px; margin-bottom: 12px; }
+
+  .chk-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 9px 14px;
+    cursor: pointer;
+    transition: all 0.15s;
+    user-select: none;
+  }
+
+  .chk-item:hover { border-color: var(--muted2); }
+  .chk-item.checked { border-color: var(--accent); background: rgba(0,232,122,0.05); }
+
+  .chk-box {
+    width: 16px; height: 16px;
+    border: 1px solid var(--muted2);
+    border-radius: 3px;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+    font-size: 10px;
+    transition: all 0.15s;
+  }
+
+  .chk-item.checked .chk-box { background: var(--accent); border-color: var(--accent); color: #000; }
+
+  /* Level slider */
+  .level-wrap { margin-bottom: 12px; }
+
+  .level-track {
+    display: flex;
+    gap: 6px;
+    margin-bottom: 8px;
+  }
+
+  .level-dot {
+    flex: 1;
+    padding: 8px 4px;
+    text-align: center;
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 12px;
+    color: var(--muted);
+    transition: all 0.15s;
+    line-height: 1.3;
+  }
+
+  .level-dot:hover { border-color: var(--muted2); color: var(--text); }
+  .level-dot.active { border-color: var(--accent); color: var(--accent); background: rgba(0,232,122,0.06); }
+
+  .level-desc {
+    font-size: 11px;
+    color: var(--muted);
+    min-height: 16px;
+    transition: opacity 0.2s;
+    text-align: center;
+  }
+
+  /* Nav buttons */
+  .nav-row {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    margin-top: 10px;
+  }
+
+  .btn-next {
+    background: var(--accent);
+    color: #000;
+    border: none;
+    font-family: var(--font);
+    font-size: 13px;
+    font-weight: 700;
+    padding: 10px 24px;
+    border-radius: 6px;
+    cursor: pointer;
+    letter-spacing: 0.04em;
+    transition: background 0.15s;
+    flex-shrink: 0;
+  }
+
+  .btn-next:hover { background: #00cc6a; }
+  .btn-next:disabled { opacity: 0.35; cursor: not-allowed; }
+
+  .btn-back {
+    background: none;
+    border: 1px solid var(--border);
+    color: var(--muted);
+    font-family: var(--font);
+    font-size: 13px;
+    padding: 10px 16px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+
+  .btn-back:hover { border-color: var(--muted2); color: var(--text); }
+
+  .btn-skip {
+    margin-left: auto;
+    background: none;
+    border: none;
+    color: var(--muted2);
+    font-family: var(--font);
+    font-size: 12px;
+    cursor: pointer;
+    padding: 10px 0;
+    transition: color 0.15s;
+  }
+
+  .btn-skip:hover { color: var(--muted); }
+
+  /* ── Result screen ── */
+  #result-screen { display: none; padding: 32px 0 48px; }
+
+  .result-title {
+    font-size: 16px;
+    color: var(--accent);
+    font-weight: 700;
+    margin-bottom: 4px;
+  }
+
+  .result-sub {
+    color: var(--muted);
+    font-size: 12px;
+    margin-bottom: 24px;
+  }
+
+  .code-block {
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 20px;
+    font-size: 13px;
+    line-height: 1.7;
+    white-space: pre-wrap;
+    color: var(--text);
+    overflow-x: auto;
+    max-height: 480px;
+    overflow-y: auto;
+  }
+
+  .code-block .cm-key { color: var(--accent); }
+  .code-block .cm-comment { color: var(--muted); }
+
+  .result-actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 16px;
+    flex-wrap: wrap;
+  }
+
+  .btn-dl {
+    background: var(--accent);
+    color: #000;
+    border: none;
+    font-family: var(--font);
+    font-size: 13px;
+    font-weight: 700;
+    padding: 11px 22px;
+    border-radius: 6px;
+    cursor: pointer;
+    letter-spacing: 0.04em;
+    transition: background 0.15s;
+  }
+
+  .btn-dl:hover { background: #00cc6a; }
+
+  .btn-copy {
+    background: none;
+    border: 1px solid var(--border);
+    color: var(--text);
+    font-family: var(--font);
+    font-size: 13px;
+    padding: 11px 22px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+
+  .btn-copy:hover { border-color: var(--muted); }
+  .btn-copy.copied { color: var(--accent); border-color: var(--accent); }
+
+  .btn-restart {
+    background: none;
+    border: none;
+    color: var(--muted);
+    font-family: var(--font);
+    font-size: 12px;
+    padding: 11px 0;
+    cursor: pointer;
+    margin-left: auto;
+    transition: color 0.15s;
+  }
+
+  .btn-restart:hover { color: var(--text); }
+
+  .next-steps {
+    margin-top: 32px;
+    border-top: 1px solid var(--border);
+    padding-top: 24px;
+  }
+
+  .next-steps h3 {
+    font-size: 13px;
+    color: var(--muted);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 16px;
+  }
+
+  .step-list { display: flex; flex-direction: column; gap: 10px; }
+
+  .step-item {
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+    font-size: 13px;
+    color: var(--muted);
+    line-height: 1.5;
+  }
+
+  .step-num {
+    color: var(--accent);
+    font-weight: 700;
+    flex-shrink: 0;
+    width: 20px;
+  }
+
+  .step-item a { color: var(--accent); text-decoration: none; }
+  .step-item a:hover { text-decoration: underline; }
+
+  /* ── Scrollbar ── */
+  ::-webkit-scrollbar { width: 4px; height: 4px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: var(--muted2); border-radius: 2px; }
+
+  /* ── Typing indicator ── */
+  .typing { display: flex; gap: 4px; align-items: center; padding: 4px 0; }
+  .typing span {
+    width: 6px; height: 6px; background: var(--muted2);
+    border-radius: 50%; animation: bounce 1.2s infinite;
+  }
+  .typing span:nth-child(2) { animation-delay: 0.2s; }
+  .typing span:nth-child(3) { animation-delay: 0.4s; }
+  @keyframes bounce {
+    0%,80%,100% { transform: translateY(0); opacity: 0.4; }
+    40% { transform: translateY(-5px); opacity: 1; }
+  }
+
+  @media (max-width: 480px) {
+    #header { padding: 12px 14px; }
+    #main { padding: 0 12px; }
+    .opt-btn { font-size: 12px; padding: 7px 12px; }
+    .level-track { gap: 4px; }
+    .level-dot { font-size: 11px; padding: 7px 2px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ── HEADER ── -->
+<div id="header">
+  <div id="logo">enter-game <span>/ boot</span></div>
+  <div id="lang-toggle">
+    <button class="lang-btn active" onclick="setLang('fr')">FR</button>
+    <button class="lang-btn" onclick="setLang('en')">EN</button>
+  </div>
+</div>
+
+<!-- ── PROGRESS ── -->
+<div id="progress-bar">
+  <div id="progress-fill"></div>
+  <div id="progress-label"></div>
+</div>
+
+<!-- ── MAIN ── -->
+<div id="main">
+
+  <!-- WELCOME -->
+  <div id="welcome-screen">
+    <div class="tagline-big">"You don't start a company.<br>You enter the game."</div>
+    <div class="tagline-sub">enter-game.protocol · 2026</div>
+    <div class="welcome-desc" id="welcome-text">
+      Cet outil t'interviewe pour générer ton <strong>CONTEXT.md</strong> personnel —
+      le fichier que ton agent IA lira au début de chaque session.<br><br>
+      5 blocs · ~5 minutes · tout reste local, rien n'est envoyé.
+    </div>
+    <div class="lang-choice">
+      <button class="lang-start-btn primary" onclick="startInterview('fr')">▶ Commencer en français</button>
+      <button class="lang-start-btn" onclick="startInterview('en')">▶ Start in English</button>
+    </div>
+  </div>
+
+  <!-- CHAT -->
+  <div id="chat-screen">
+    <div id="messages"></div>
+    <div id="input-area"></div>
+  </div>
+
+  <!-- RESULT -->
+  <div id="result-screen">
+    <div class="result-title" id="result-title">✓ Ton CONTEXT.md est prêt</div>
+    <div class="result-sub" id="result-sub">Copie ce fichier dans la racine de ton repo mémoire (< 60 lignes, chargé à chaque session).</div>
+    <div class="code-block" id="result-code"></div>
+    <div class="result-actions">
+      <button class="btn-dl" onclick="downloadFile()" id="btn-dl">⬇ Télécharger CONTEXT.md</button>
+      <button class="btn-copy" onclick="copyText()" id="btn-copy">Copier</button>
+      <button class="btn-restart" onclick="restart()" id="btn-restart">↺ Recommencer</button>
+    </div>
+    <div class="next-steps">
+      <h3 id="next-title">Prochaines étapes</h3>
+      <div class="step-list" id="step-list"></div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+/* ═══════════════════════════════════════════════════════════
+   STATE
+═══════════════════════════════════════════════════════════ */
+let lang = 'fr';
+let answers = {};
+let currentQ = 0;
+let history = []; // [{qIndex, answer}]
+
+/* ═══════════════════════════════════════════════════════════
+   QUESTIONS
+═══════════════════════════════════════════════════════════ */
+const BLOCKS = {
+  fr: ['IDENTITÉ', 'VISION', 'STACK', 'PROJETS', 'PROTOCOLE'],
+  en: ['IDENTITY', 'VISION', 'STACK', 'PROJECTS', 'PROTOCOL']
+};
+
+const QUESTIONS = [
+  /* ── BLOC 1 — IDENTITÉ ── */
+  {
+    id: 'name', block: 0,
+    q: { fr: 'Ton nom ou pseudonyme ?', en: 'Your name or username?' },
+    hint: { fr: 'ex. Yoan, @builder42, Marie L.', en: 'e.g. Yoan, @builder42, Alex M.' },
+    type: 'text', key: 'name', required: true
+  },
+  {
+    id: 'role', block: 0,
+    q: { fr: 'Ton rôle et ce que tu construis — en une ligne.', en: 'Your role and what you\'re building — one line.' },
+    hint: { fr: 'ex. Fondateur solo · app mobile de lecture intelligente', en: 'e.g. Solo founder · AI-powered reading app' },
+    type: 'text', key: 'role', required: true
+  },
+  {
+    id: 'context', block: 0,
+    q: { fr: 'Comment tu travailles ?', en: 'How do you work?' },
+    type: 'radio',
+    options: {
+      fr: ['Solo — 100% seul', 'Solo + freelancers ponctuels', 'Petite équipe (2–5)', 'Étudiant / side-project', 'Autre'],
+      en: ['Solo — 100% alone', 'Solo + occasional freelancers', 'Small team (2–5)', 'Student / side-project', 'Other']
+    },
+    key: 'context', required: true
+  },
+
+  /* ── BLOC 2 — VISION ── */
+  {
+    id: 'problem', block: 1,
+    q: { fr: 'Quel est le problème que tu veux résoudre ?', en: 'What problem are you solving?' },
+    hint: { fr: 'Le vrai problème — pas le produit, le problème.', en: 'The real problem — not the product, the problem.' },
+    type: 'textarea', key: 'problem', required: true
+  },
+  {
+    id: 'vision', block: 1,
+    q: { fr: 'Dans 5 ans, à quoi ressemble le succès pour toi ?', en: 'In 5 years, what does success look like for you?' },
+    hint: { fr: 'ex. 100K utilisateurs, 1M$ ARR, protocole utilisé dans 10 pays...', en: 'e.g. 100K users, $1M ARR, protocol used in 10 countries...' },
+    type: 'textarea', key: 'vision', required: false
+  },
+  {
+    id: 'constraint', block: 1,
+    q: { fr: 'Ta contrainte principale aujourd\'hui ?', en: 'Your main constraint right now?' },
+    type: 'radio',
+    options: {
+      fr: ['⏱ Temps — pas assez d\'heures', '💰 Capital — budget limité', '🧠 Compétences — courbe d\'apprentissage', '🎯 Clarté — direction incertaine', '⚡ Énergie / focus'],
+      en: ['⏱ Time — not enough hours', '💰 Capital — limited budget', '🧠 Skills — learning curve', '🎯 Clarity — uncertain direction', '⚡ Energy / focus']
+    },
+    key: 'constraint', required: true
+  },
+
+  /* ── BLOC 3 — STACK ── */
+  {
+    id: 'ai_tools', block: 2,
+    q: { fr: 'Tu utilises quels outils IA aujourd\'hui ?', en: 'Which AI tools do you currently use?' },
+    type: 'checkbox',
+    options: {
+      fr: ['Claude (Anthropic)', 'ChatGPT / GPT-4', 'Gemini', 'Cursor / Copilot', 'Perplexity', 'n8n / Make / Zapier', 'Midjourney / DALL·E', 'Whisper / voix', 'Autre'],
+      en: ['Claude (Anthropic)', 'ChatGPT / GPT-4', 'Gemini', 'Cursor / Copilot', 'Perplexity', 'n8n / Make / Zapier', 'Midjourney / DALL·E', 'Whisper / Voice', 'Other']
+    },
+    key: 'ai_tools', required: false
+  },
+  {
+    id: 'github', block: 2,
+    q: { fr: 'Tu as déjà un repo GitHub pour ta mémoire IA ?', en: 'Do you already have a GitHub repo for your AI memory?' },
+    type: 'radio',
+    options: {
+      fr: ['Oui, il existe déjà', 'Non, je vais le créer', 'Je ne sais pas ce que c\'est'],
+      en: ['Yes, it already exists', 'No, I\'ll create it', 'I\'m not sure what that is']
+    },
+    key: 'github', required: true
+  },
+  {
+    id: 'level', block: 2,
+    q: { fr: 'Ton niveau actuel avec les agents IA ?', en: 'Your current level with AI agents?' },
+    type: 'level',
+    levels: {
+      fr: [
+        { label: 'N1', desc: 'Curieux — j\'explore' },
+        { label: 'N2', desc: 'Utilisateur — tâches ponctuelles' },
+        { label: 'N3', desc: 'Builder — pipelines actifs' },
+        { label: 'N4', desc: 'Architecte — mémoire + agents' },
+        { label: 'N5', desc: 'Frontier — systèmes auto-régulés' }
+      ],
+      en: [
+        { label: 'N1', desc: 'Curious — exploring' },
+        { label: 'N2', desc: 'User — one-off tasks' },
+        { label: 'N3', desc: 'Builder — active pipelines' },
+        { label: 'N4', desc: 'Architect — memory + agents' },
+        { label: 'N5', desc: 'Frontier — self-regulating systems' }
+      ]
+    },
+    key: 'level', required: true
+  },
+
+  /* ── BLOC 4 — PROJETS ── */
+  {
+    id: 'project1', block: 3,
+    q: { fr: 'Projet actif #1 — nom + une ligne d\'état.', en: 'Active project #1 — name + one-line status.' },
+    hint: { fr: 'ex. EasyRead · App mobile lecture · prêt à publier', en: 'e.g. EasyRead · Reading app · ready to publish' },
+    type: 'text', key: 'project1', required: true
+  },
+  {
+    id: 'project2', block: 3,
+    q: { fr: 'Projet actif #2 ? (optionnel — Entrée pour ignorer)', en: 'Active project #2? (optional — Enter to skip)' },
+    hint: { fr: 'ex. Blueprint · Système de direction · en cours', en: 'e.g. Blueprint · Direction system · in progress' },
+    type: 'text', key: 'project2', required: false
+  },
+  {
+    id: 'project3', block: 3,
+    q: { fr: 'Projet actif #3 ? (optionnel)', en: 'Active project #3? (optional)' },
+    type: 'text', key: 'project3', required: false
+  },
+
+  /* ── BLOC 5 — PROTOCOLE ── */
+  {
+    id: 'interface', block: 4,
+    q: { fr: 'Comment tu préfères interagir avec l\'IA ?', en: 'How do you prefer to interact with AI?' },
+    type: 'radio',
+    options: {
+      fr: ['🎙 Voix — depuis mes écouteurs, en déplacement', '⌨️ Texte — au clavier, focus mode', '⚡ Les deux selon le contexte'],
+      en: ['🎙 Voice — from earbuds, on the move', '⌨️ Text — keyboard, focus mode', '⚡ Both depending on context']
+    },
+    key: 'interface', required: true
+  },
+  {
+    id: 'never', block: 4,
+    q: { fr: 'Ce que ton IA ne doit JAMAIS faire avec toi.', en: 'What your AI should NEVER do with you.' },
+    hint: { fr: 'ex. Ne jamais reformuler ce que je viens de dire · Ne jamais faire de déploiement prod sans confirmer', en: 'e.g. Never repeat what I just said · Never deploy to prod without confirming' },
+    type: 'textarea', key: 'never', required: false
+  },
+  {
+    id: 'always', block: 4,
+    q: { fr: 'Ce que ton IA doit TOUJOURS faire avec toi.', en: 'What your AI should ALWAYS do with you.' },
+    hint: { fr: 'ex. Toujours proposer une prochaine action · Répondre en français · Être direct, zéro rembourrage', en: 'e.g. Always suggest a next action · Be direct, no padding · Commit to GitHub after every session' },
+    type: 'textarea', key: 'always', required: false
+  }
+];
+
+const TOTAL_Q = QUESTIONS.length;
+
+/* ═══════════════════════════════════════════════════════════
+   LANG
+═══════════════════════════════════════════════════════════ */
+function setLang(l) {
+  lang = l;
+  document.querySelectorAll('.lang-btn').forEach(b => b.classList.toggle('active', b.textContent === l.toUpperCase()));
+  if (document.getElementById('welcome-text')) {
+    const t = l === 'fr'
+      ? 'Cet outil t\'interviewe pour générer ton <strong>CONTEXT.md</strong> personnel — le fichier que ton agent IA lira au début de chaque session.<br><br>5 blocs · ~5 minutes · tout reste local, rien n\'est envoyé.'
+      : 'This tool interviews you to generate your personal <strong>CONTEXT.md</strong> — the file your AI agent reads at the start of every session.<br><br>5 blocks · ~5 min · everything stays local, nothing is sent.';
+    document.getElementById('welcome-text').innerHTML = t;
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════
+   INTERVIEW ENGINE
+═══════════════════════════════════════════════════════════ */
+function startInterview(l) {
+  setLang(l);
+  answers = {}; currentQ = 0; history = [];
+  document.getElementById('welcome-screen').style.display = 'none';
+  document.getElementById('result-screen').style.display = 'none';
+  document.getElementById('chat-screen').style.display = 'flex';
+  document.getElementById('messages').innerHTML = '';
+  renderQuestion();
+}
+
+function renderQuestion() {
+  updateProgress();
+  const q = QUESTIONS[currentQ];
+  if (!q) { showResult(); return; }
+
+  // Block label if first in block
+  const msgs = document.getElementById('messages');
+  const isFirstInBlock = currentQ === 0 || QUESTIONS[currentQ - 1].block !== q.block;
+  if (isFirstInBlock) {
+    const bl = document.createElement('div');
+    bl.className = 'block-label';
+    bl.textContent = `── ${BLOCKS[lang][q.block]} ──`;
+    msgs.appendChild(bl);
+  }
+
+  // Typing animation, then question
+  const typingId = showTyping();
+  setTimeout(() => {
+    removeTyping(typingId);
+    addAgentMsg(q.q[lang]);
+    renderInput(q);
+    scrollBottom();
+  }, 400);
+}
+
+let typingCounter = 0;
+function showTyping() {
+  const id = 'typing-' + (++typingCounter);
+  const msgs = document.getElementById('messages');
+  const div = document.createElement('div');
+  div.className = 'msg agent'; div.id = id;
+  div.innerHTML = `
+    <div class="msg-avatar">EG</div>
+    <div class="msg-body">
+      <div class="msg-name">Enter-Game</div>
+      <div class="msg-bubble"><div class="typing"><span></span><span></span><span></span></div></div>
+    </div>`;
+  msgs.appendChild(div);
+  scrollBottom();
+  return id;
+}
+
+function removeTyping(id) {
+  const el = document.getElementById(id);
+  if (el) el.remove();
+}
+
+function addAgentMsg(text) {
+  const msgs = document.getElementById('messages');
+  const div = document.createElement('div');
+  div.className = 'msg agent';
+  div.innerHTML = `
+    <div class="msg-avatar">EG</div>
+    <div class="msg-body">
+      <div class="msg-name">Enter-Game</div>
+      <div class="msg-bubble">${text}</div>
+    </div>`;
+  msgs.appendChild(div);
+}
+
+function addUserMsg(text) {
+  const msgs = document.getElementById('messages');
+  const div = document.createElement('div');
+  div.className = 'msg user';
+  div.innerHTML = `
+    <div class="msg-avatar">↑</div>
+    <div class="msg-body">
+      <div class="msg-name">${lang === 'fr' ? 'Toi' : 'You'}</div>
+      <div class="msg-bubble">${text}</div>
+    </div>`;
+  msgs.appendChild(div);
+}
+
+/* ── Input renderer ── */
+function renderInput(q) {
+  const area = document.getElementById('input-area');
+  area.innerHTML = '';
+
+  if (q.type === 'text') renderTextInput(area, q, false);
+  else if (q.type === 'textarea') renderTextInput(area, q, true);
+  else if (q.type === 'radio') renderRadio(area, q);
+  else if (q.type === 'checkbox') renderCheckbox(area, q);
+  else if (q.type === 'level') renderLevel(area, q);
+}
+
+function renderTextInput(area, q, multi) {
+  const existing = answers[q.key] || '';
+  const tag = multi ? 'textarea' : 'input';
+  const rows = multi ? 'rows="3"' : '';
+  area.innerHTML = `
+    <div class="text-input-wrap">
+      <${tag} class="text-input" id="q-input" placeholder="${q.hint ? q.hint[lang] : ''}" ${rows}>${multi ? existing : ''}</${tag}>
+      ${!multi ? '' : ''}
+    </div>
+    <div class="nav-row">
+      ${currentQ > 0 ? `<button class="btn-back" onclick="goBack()">${lang==='fr'?'← Retour':'← Back'}</button>` : ''}
+      <button class="btn-next" id="btn-next" onclick="submitText()">${lang==='fr'?'Suivant →':'Next →'}</button>
+      ${!q.required ? `<button class="btn-skip" onclick="skip()">${lang==='fr'?'Ignorer':'Skip'}</button>` : ''}
+    </div>`;
+  const inp = document.getElementById('q-input');
+  if (!multi) inp.value = existing;
+  inp.addEventListener('keydown', e => {
+    if (e.key === 'Enter' && !multi) { e.preventDefault(); submitText(); }
+    if (e.key === 'Enter' && multi && e.ctrlKey) { e.preventDefault(); submitText(); }
+  });
+  setTimeout(() => inp.focus(), 50);
+}
+
+function renderRadio(area, q) {
+  const opts = q.options[lang];
+  const existing = answers[q.key] || null;
+  area.innerHTML = `
+    <div class="options-grid" id="opt-grid">
+      ${opts.map((o, i) => `<button class="opt-btn${existing === o ? ' active' : ''}" onclick="selectOpt(this, '${q.key}')" data-val="${o}">${o}</button>`).join('')}
+    </div>
+    <div class="nav-row">
+      ${currentQ > 0 ? `<button class="btn-back" onclick="goBack()">${lang==='fr'?'← Retour':'← Back'}</button>` : ''}
+      <button class="btn-next" id="btn-next" onclick="submitRadio('${q.key}')" ${!existing ? 'disabled' : ''}>${lang==='fr'?'Suivant →':'Next →'}</button>
+    </div>`;
+}
+
+function selectOpt(el, key) {
+  document.querySelectorAll('#opt-grid .opt-btn').forEach(b => b.classList.remove('active'));
+  el.classList.add('active');
+  answers[key] = el.dataset.val;
+  document.getElementById('btn-next').disabled = false;
+}
+
+function renderCheckbox(area, q) {
+  const opts = q.options[lang];
+  const existing = answers[q.key] || [];
+  area.innerHTML = `
+    <div class="checkbox-list" id="chk-list">
+      ${opts.map(o => `
+        <div class="chk-item${existing.includes(o) ? ' checked' : ''}" onclick="toggleChk(this)" data-val="${o}">
+          <div class="chk-box">${existing.includes(o) ? '✓' : ''}</div>
+          <span>${o}</span>
+        </div>`).join('')}
+    </div>
+    <div class="nav-row">
+      ${currentQ > 0 ? `<button class="btn-back" onclick="goBack()">${lang==='fr'?'← Retour':'← Back'}</button>` : ''}
+      <button class="btn-next" onclick="submitCheckbox('${q.key}')">${lang==='fr'?'Suivant →':'Next →'}</button>
+      <button class="btn-skip" onclick="skip()">${lang==='fr'?'Aucun':'None'}</button>
+    </div>`;
+}
+
+function toggleChk(el) {
+  el.classList.toggle('checked');
+  el.querySelector('.chk-box').textContent = el.classList.contains('checked') ? '✓' : '';
+}
+
+function renderLevel(area, q) {
+  const levels = q.levels[lang];
+  const existing = answers[q.key] || null;
+  area.innerHTML = `
+    <div class="level-wrap">
+      <div class="level-track" id="level-track">
+        ${levels.map((l, i) => `
+          <div class="level-dot${existing === l.label ? ' active' : ''}" onclick="selectLevel(this, '${q.key}')" data-val="${l.label}" data-desc="${l.desc}">
+            <div>${l.label}</div>
+            <div style="font-size:9px;color:var(--muted);margin-top:2px">${l.desc.split('—')[0].trim()}</div>
+          </div>`).join('')}
+      </div>
+      <div class="level-desc" id="level-desc">${existing ? levels.find(l=>l.label===existing)?.desc || '' : (lang==='fr'?'Sélectionne ton niveau':'Select your level')}</div>
+    </div>
+    <div class="nav-row">
+      ${currentQ > 0 ? `<button class="btn-back" onclick="goBack()">${lang==='fr'?'← Retour':'← Back'}</button>` : ''}
+      <button class="btn-next" id="btn-next" onclick="submitRadio('${q.key}')" ${!existing ? 'disabled' : ''}>${lang==='fr'?'Suivant →':'Next →'}</button>
+    </div>`;
+}
+
+function selectLevel(el, key) {
+  document.querySelectorAll('#level-track .level-dot').forEach(d => d.classList.remove('active'));
+  el.classList.add('active');
+  answers[key] = el.dataset.val;
+  document.getElementById('level-desc').textContent = el.dataset.desc;
+  document.getElementById('btn-next').disabled = false;
+}
+
+/* ── Submit handlers ── */
+function submitText() {
+  const inp = document.getElementById('q-input');
+  const val = inp.value.trim();
+  const q = QUESTIONS[currentQ];
+  if (q.required && !val) { inp.style.borderColor = '#ff4444'; setTimeout(() => inp.style.borderColor = '', 600); return; }
+  if (val) { answers[q.key] = val; addUserMsg(val.replace(/\n/g, '<br>')); }
+  history.push(currentQ);
+  currentQ++;
+  renderQuestion();
+}
+
+function submitRadio(key) {
+  const val = answers[key];
+  if (!val) return;
+  addUserMsg(val);
+  history.push(currentQ);
+  currentQ++;
+  renderQuestion();
+}
+
+function submitCheckbox(key) {
+  const checked = [...document.querySelectorAll('#chk-list .chk-item.checked')].map(el => el.dataset.val);
+  answers[key] = checked;
+  addUserMsg(checked.length ? checked.join(', ') : (lang === 'fr' ? '(aucun)' : '(none)'));
+  history.push(currentQ);
+  currentQ++;
+  renderQuestion();
+}
+
+function skip() {
+  const q = QUESTIONS[currentQ];
+  answers[q.key] = null;
+  history.push(currentQ);
+  currentQ++;
+  renderQuestion();
+}
+
+function goBack() {
+  if (history.length === 0) return;
+  currentQ = history.pop();
+  // Remove last 2 messages (agent + user) and possibly block label
+  const msgs = document.getElementById('messages');
+  // Remove user msg
+  if (msgs.lastChild && msgs.lastChild.classList.contains('msg')) msgs.removeChild(msgs.lastChild);
+  // Remove agent msg
+  if (msgs.lastChild && msgs.lastChild.classList.contains('msg')) msgs.removeChild(msgs.lastChild);
+  // Remove block label if present
+  if (msgs.lastChild && msgs.lastChild.classList.contains('block-label')) msgs.removeChild(msgs.lastChild);
+  renderQuestion();
+}
+
+function updateProgress() {
+  const pct = Math.round((currentQ / TOTAL_Q) * 100);
+  document.getElementById('progress-fill').style.width = pct + '%';
+  const q = QUESTIONS[currentQ];
+  if (q) {
+    const blockName = q ? BLOCKS[lang][q.block] : '';
+    document.getElementById('progress-label').textContent = `${blockName} · ${currentQ + 1}/${TOTAL_Q}`;
+  }
+}
+
+function scrollBottom() {
+  const msgs = document.getElementById('messages');
+  setTimeout(() => msgs.scrollTop = msgs.scrollHeight, 50);
+}
+
+/* ═══════════════════════════════════════════════════════════
+   RESULT GENERATOR
+═══════════════════════════════════════════════════════════ */
+function showResult() {
+  document.getElementById('chat-screen').style.display = 'none';
+  document.getElementById('progress-fill').style.width = '100%';
+  document.getElementById('progress-label').textContent = lang === 'fr' ? 'Terminé ✓' : 'Done ✓';
+
+  const rs = document.getElementById('result-screen');
+  rs.style.display = 'block';
+
+  const name = answers.name || (lang === 'fr' ? 'Joueur' : 'Player');
+
+  if (lang === 'fr') {
+    document.getElementById('result-title').textContent = `✓ Ton CONTEXT.md est prêt, ${name}`;
+    document.getElementById('result-sub').textContent = 'Copie ce fichier dans la racine de ton repo mémoire GitHub. Charge-le dans ton projet IA au début de chaque session.';
+    document.getElementById('btn-dl').textContent = '⬇ Télécharger CONTEXT.md';
+    document.getElementById('btn-copy').textContent = 'Copier';
+    document.getElementById('btn-restart').textContent = '↺ Recommencer';
+    document.getElementById('next-title').textContent = 'Prochaines étapes';
+  } else {
+    document.getElementById('result-title').textContent = `✓ Your CONTEXT.md is ready, ${name}`;
+    document.getElementById('result-sub').textContent = 'Copy this file to the root of your GitHub memory repo. Load it into your AI project at the start of every session.';
+    document.getElementById('btn-dl').textContent = '⬇ Download CONTEXT.md';
+    document.getElementById('btn-copy').textContent = 'Copy';
+    document.getElementById('btn-restart').textContent = '↺ Restart';
+    document.getElementById('next-title').textContent = 'Next steps';
+  }
+
+  const md = generateContextMd();
+  document.getElementById('result-code').textContent = md;
+
+  renderNextSteps();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function generateContextMd() {
+  const a = answers;
+  const date = new Date().toLocaleDateString(lang === 'fr' ? 'fr-CA' : 'en-CA', { year: 'numeric', month: 'long', day: 'numeric' });
+
+  const tools = Array.isArray(a.ai_tools) && a.ai_tools.length ? a.ai_tools.join(', ') : (lang === 'fr' ? '(à compléter)' : '(to fill in)');
+
+  const projects = [a.project1, a.project2, a.project3]
+    .filter(Boolean)
+    .map(p => `- ${p}`)
+    .join('\n') || (lang === 'fr' ? '- (à ajouter)' : '- (to add)');
+
+  const interfaceMap = {
+    fr: { '🎙 Voix — depuis mes écouteurs, en déplacement': 'Voice-first — earbuds, on the move', '⌨️ Texte — au clavier, focus mode': 'Text-first — keyboard, focus mode', '⚡ Les deux selon le contexte': 'Both — voice on the move, text for deep work' },
+    en: { '🎙 Voice — from earbuds, on the move': 'Voice-first — earbuds, on the move', '⌨️ Text — keyboard, focus mode': 'Text-first — keyboard, focus mode', '⚡ Both depending on context': 'Both — voice on the move, text for deep work' }
+  };
+  const interfaceClean = interfaceMap[lang][a.interface] || a.interface || '(to fill in)';
+
+  const levelDescs = {
+    N1: lang === 'fr' ? 'Curieux — en exploration' : 'Curious — exploring',
+    N2: lang === 'fr' ? 'Utilisateur — tâches ponctuelles' : 'User — one-off tasks',
+    N3: lang === 'fr' ? 'Builder — pipelines actifs' : 'Builder — active pipelines',
+    N4: lang === 'fr' ? 'Architecte — mémoire + agents' : 'Architect — memory + agents',
+    N5: lang === 'fr' ? 'Frontier — systèmes auto-régulés' : 'Frontier — self-regulating systems'
+  };
+  const levelFull = a.level ? `${a.level} — ${levelDescs[a.level] || ''}` : '(to fill in)';
+
+  const constraintClean = (a.constraint || '').replace(/^[^\s]+ /, '').trim();
+
+  const neverLine = a.never ? a.never.trim() : (lang === 'fr' ? '(à compléter)' : '(to fill in)');
+  const alwaysLine = a.always ? a.always.trim() : (lang === 'fr' ? '(à compléter)' : '(to fill in)');
+
+  const githubStatus = {
+    fr: { 'Oui, il existe déjà': 'Existant', 'Non, je vais le créer': 'À créer', 'Je ne sais pas ce que c\'est': 'À configurer' },
+    en: { 'Yes, it already exists': 'Existing', 'No, I\'ll create it': 'To create', 'I\'m not sure what that is': 'To configure' }
+  };
+  const ghStatus = githubStatus[lang][a.github] || (a.github || '');
+
+  if (lang === 'fr') {
+    return `# ${a.name || 'Nom'} — Contexte
+*Généré par Enter-Game · ${date}*
+
+---
+
+## Qui je suis
+${a.role || '(à compléter)'}
+Mode : ${(a.context || '').replace(/^(Solo|Solo|Petite|Étudiant|Autre)\s*[—–-]\s*/i, '') || '(à compléter)'}
+
+## Vision
+**Problème :** ${(a.problem || '').replace(/\n/g, ' ')}
+**Succès dans 5 ans :** ${(a.vision || '').replace(/\n/g, ' ') || '(à compléter)'}
+**Contrainte principale :** ${constraintClean || '(à compléter)'}
+
+## Stack IA
+Outils : ${tools}
+GitHub mémoire : ${ghStatus}
+Niveau : ${levelFull}
+
+## Projets actifs
+${projects}
+
+## Protocole de collaboration
+Interface : ${interfaceClean}
+Jamais : ${neverLine}
+Toujours : ${alwaysLine}
+
+## Raccourcis
+- "go [X]" → exécuter immédiatement
+- "[A] + [B] + [C]" → batcher en un seul context window
+- "interview-moi sur [X]" → 5–8 questions avant d'agir
+- "rapport" → résumé + TODO + commit GitHub
+- "contexte ?" → relire la mémoire, résumer l'état actuel`;
+  } else {
+    return `# ${a.name || 'Name'} — Context
+*Generated by Enter-Game · ${date}*
+
+---
+
+## Who I am
+${a.role || '(to fill in)'}
+Mode: ${(a.context || '').replace(/^(Solo|Solo|Small|Student|Other)\s*[—–+-]\s*/i, '') || '(to fill in)'}
+
+## Vision
+**Problem:** ${(a.problem || '').replace(/\n/g, ' ')}
+**Success in 5 years:** ${(a.vision || '').replace(/\n/g, ' ') || '(to fill in)'}
+**Main constraint:** ${constraintClean || '(to fill in)'}
+
+## AI Stack
+Tools: ${tools}
+GitHub memory: ${ghStatus}
+Level: ${levelFull}
+
+## Active projects
+${projects}
+
+## Collaboration protocol
+Interface: ${interfaceClean}
+Never: ${neverLine}
+Always: ${alwaysLine}
+
+## Shortcuts
+- "go [X]" → execute immediately
+- "[A] + [B] + [C]" → batch in one context window
+- "interview me on [X]" → 5–8 questions before acting
+- "rapport" → summary + TODO + GitHub commit
+- "context?" → reload memory, summarize current state`;
+  }
+}
+
+/* ── Next steps ── */
+function renderNextSteps() {
+  const list = document.getElementById('step-list');
+  const steps = lang === 'fr' ? [
+    { n: '1', text: 'Crée un repo GitHub privé <code>ton-nom-memory</code> et place ce fichier à la racine.' },
+    { n: '2', text: 'Dans ton projet Claude (ou équivalent), charge ce fichier comme contexte permanent.' },
+    { n: '3', text: 'À ta prochaine session, dis juste <strong>"contexte ?"</strong> — l\'agent relira tout.' },
+    { n: '4', text: 'Lis <a href="README_memory.md">README_memory.md</a> pour comprendre l\'architecture mémoire complète (L1→L4).' },
+    { n: '5', text: 'Explore <a href="README_agents.md">README_agents.md</a> quand tu es prêt pour le pipeline 7 agents.' }
+  ] : [
+    { n: '1', text: 'Create a private GitHub repo <code>your-name-memory</code> and place this file at the root.' },
+    { n: '2', text: 'In your Claude project (or equivalent), load this file as permanent context.' },
+    { n: '3', text: 'At your next session, just say <strong>"context?"</strong> — the agent will reload everything.' },
+    { n: '4', text: 'Read <a href="README_memory.md">README_memory.md</a> to understand the full memory architecture (L1→L4).' },
+    { n: '5', text: 'Explore <a href="README_agents.md">README_agents.md</a> when you\'re ready for the 7-agent pipeline.' }
+  ];
+  list.innerHTML = steps.map(s => `
+    <div class="step-item">
+      <span class="step-num">${s.n}</span>
+      <span>${s.text}</span>
+    </div>`).join('');
+}
+
+/* ── Actions ── */
+function downloadFile() {
+  const md = generateContextMd();
+  const blob = new Blob([md], { type: 'text/markdown;charset=utf-8' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url; a.download = 'CONTEXT.md'; a.click();
+  URL.revokeObjectURL(url);
+}
+
+function copyText() {
+  const md = generateContextMd();
+  navigator.clipboard.writeText(md).then(() => {
+    const btn = document.getElementById('btn-copy');
+    btn.textContent = lang === 'fr' ? '✓ Copié !' : '✓ Copied!';
+    btn.classList.add('copied');
+    setTimeout(() => {
+      btn.textContent = lang === 'fr' ? 'Copier' : 'Copy';
+      btn.classList.remove('copied');
+    }, 2000);
+  });
+}
+
+function restart() {
+  answers = {}; currentQ = 0; history = [];
+  document.getElementById('result-screen').style.display = 'none';
+  document.getElementById('progress-fill').style.width = '0%';
+  document.getElementById('progress-label').textContent = '';
+  document.getElementById('welcome-screen').style.display = 'flex';
+}
+</script>
+</body>
+</html>
