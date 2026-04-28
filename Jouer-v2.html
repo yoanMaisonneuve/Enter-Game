@@ -3,32 +3,39 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Enter-Game — Navigator</title>
+<title>Enter-Game · Navigator</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
 <style>
 :root {
-  --bg: #0a0a0a;
-  --bg2: #111111;
-  --bg3: #1a1a1a;
-  --bg4: #222222;
-  --border: #222222;
-  --accent: #00e87a;
-  --accent-dim: rgba(0,232,122,0.12);
-  --text: #e8e8e8;
-  --muted: #666666;
-  --muted2: #444444;
-  --radius: 8px;
-  --font: 'JetBrains Mono','Fira Code','Cascadia Code','Consolas',monospace;
+  --marine:      #003A5D;
+  --marine-dark: #001e30;
+  --marine-mid:  #004d78;
+  --vivid:       #009ADE;
+  --vivid-dim:   rgba(0,154,222,0.08);
+  --vivid-border:rgba(0,154,222,0.25);
+  --bg:          #f4f6f8;
+  --white:       #ffffff;
+  --ink:         #1a1a1a;
+  --muted:       #6B7280;
+  --border:      #E5E7EB;
+  --border-dark: #D1D5DB;
+  --code-bg:     #001e30;
+  --code-text:   #bfdbfe;
+  --radius:      0px;
 }
 
-* { box-sizing: border-box; margin: 0; padding: 0; }
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
 
 body {
+  font-family: 'Inter', sans-serif;
   background: var(--bg);
-  color: var(--text);
-  font-family: var(--font);
-  font-size: 13px;
+  color: var(--ink);
+  font-size: 14px;
   line-height: 1.6;
-  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
 }
 
 /* ── Header ── */
@@ -36,362 +43,352 @@ body {
   position: sticky;
   top: 0;
   z-index: 100;
-  background: var(--bg);
+  background: var(--white);
   border-bottom: 1px solid var(--border);
+  box-shadow: 0 1px 12px rgba(0,58,93,0.06);
 }
 
 #topbar {
+  max-width: 1000px;
+  margin: 0 auto;
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  padding: 10px 16px;
+  gap: 16px;
+  padding: 14px 24px;
 }
 
-#logo { color: var(--accent); font-size: 12px; font-weight: 700; letter-spacing: 0.08em; }
-#logo span { color: var(--muted); font-weight: 400; }
+#logo-wrap { display: flex; align-items: center; gap: 10px; text-decoration: none; flex-shrink: 0; }
 
-#search-wrap {
-  flex: 1;
-  max-width: 280px;
-  margin: 0 12px;
-  position: relative;
+#logo-mark {
+  width: 36px; height: 36px;
+  background: var(--vivid);
+  display: flex; align-items: center; justify-content: center;
+  font-weight: 900; font-size: 11px; letter-spacing: 0.06em; color: white;
+  flex-shrink: 0;
 }
+
+#logo-text-top { font-size: 13px; font-weight: 800; color: var(--marine); letter-spacing: 0.04em; line-height: 1.2; }
+#logo-text-sub { font-size: 10px; font-weight: 500; color: var(--muted); letter-spacing: 0.1em; text-transform: uppercase; }
+
+#search-wrap { flex: 1; max-width: 300px; position: relative; }
 
 #search {
   width: 100%;
-  background: var(--bg3);
+  background: var(--bg);
   border: 1px solid var(--border);
-  border-radius: 6px;
-  color: var(--text);
-  font-family: var(--font);
-  font-size: 12px;
-  padding: 6px 10px 6px 28px;
+  color: var(--ink);
+  font-family: 'Inter', sans-serif;
+  font-size: 13px;
+  padding: 7px 12px 7px 32px;
   outline: none;
-  transition: border-color 0.15s;
+  transition: border-color 0.15s, box-shadow 0.15s;
 }
+#search:focus { border-color: var(--vivid); box-shadow: 0 0 0 3px rgba(0,154,222,0.1); }
+#search::placeholder { color: var(--muted); font-size: 12px; }
 
-#search:focus { border-color: var(--accent); }
-#search::placeholder { color: var(--muted); }
+#search-icon { position: absolute; left: 10px; top: 50%; transform: translateY(-50%); color: var(--muted); font-size: 14px; pointer-events: none; }
 
-#search-icon {
-  position: absolute;
-  left: 9px;
-  top: 50%;
-  transform: translateY(-50%);
-  color: var(--muted);
-  font-size: 11px;
-  pointer-events: none;
+#gh-link {
+  display: flex; align-items: center; gap: 6px;
+  color: var(--muted); font-size: 12px; font-weight: 600; letter-spacing: 0.04em;
+  text-decoration: none; border: 1px solid var(--border);
+  padding: 6px 14px; text-transform: uppercase; transition: all 0.15s;
+  white-space: nowrap;
 }
-
-#github-link {
-  color: var(--muted);
-  font-size: 11px;
-  text-decoration: none;
-  letter-spacing: 0.04em;
-  border: 1px solid var(--border);
-  border-radius: 5px;
-  padding: 5px 10px;
-  transition: all 0.15s;
-}
-#github-link:hover { color: var(--accent); border-color: var(--accent); }
+#gh-link:hover { border-color: var(--vivid); color: var(--vivid); }
 
 /* ── Tabs ── */
-#tabs {
+#tabbar {
+  max-width: 1000px;
+  margin: 0 auto;
   display: flex;
   gap: 0;
-  padding: 0 16px;
+  padding: 0 24px;
+  border-top: 1px solid var(--border);
   overflow-x: auto;
   scrollbar-width: none;
 }
-#tabs::-webkit-scrollbar { display: none; }
+#tabbar::-webkit-scrollbar { display: none; }
 
 .tab {
-  background: none;
-  border: none;
-  color: var(--muted);
-  font-family: var(--font);
-  font-size: 11px;
-  padding: 8px 14px;
-  cursor: pointer;
-  letter-spacing: 0.06em;
-  border-bottom: 2px solid transparent;
-  white-space: nowrap;
+  background: none; border: none;
+  color: var(--muted); font-family: 'Inter', sans-serif;
+  font-size: 11px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase;
+  padding: 10px 18px;
+  cursor: pointer; white-space: nowrap;
+  border-bottom: 2px solid transparent; margin-bottom: -1px;
   transition: all 0.15s;
 }
-.tab:hover { color: var(--text); }
-.tab.active { color: var(--accent); border-bottom-color: var(--accent); }
+.tab:hover { color: var(--marine); }
+.tab.active { color: var(--vivid); border-bottom-color: var(--vivid); }
 
 /* ── Content ── */
-#content { max-width: 800px; margin: 0 auto; padding: 24px 16px 60px; }
+#content { max-width: 1000px; margin: 0 auto; padding: 40px 24px 80px; }
 
 .pane { display: none; }
 .pane.active { display: block; }
 
-/* ── Home ── */
-.hero { text-align: center; padding: 48px 0 40px; }
-.hero-tag { color: var(--accent); font-size: clamp(16px,3vw,24px); font-weight: 700; letter-spacing: -0.02em; margin-bottom: 8px; }
-.hero-sub { color: var(--muted); font-size: 12px; margin-bottom: 32px; }
+/* ── Fade-in ── */
+.fade-in { opacity: 0; transform: translateY(20px); animation: fadeUp 0.5s ease forwards; }
+.fade-in-d1 { animation-delay: 0.05s; }
+.fade-in-d2 { animation-delay: 0.1s; }
+.fade-in-d3 { animation-delay: 0.15s; }
+.fade-in-d4 { animation-delay: 0.2s; }
+@keyframes fadeUp { to { opacity: 1; transform: translateY(0); } }
 
-.nav-cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; margin-bottom: 40px; }
+/* ── Section label ── */
+.section-label {
+  font-size: 10px; font-weight: 700; letter-spacing: 0.12em;
+  text-transform: uppercase; color: var(--vivid); margin-bottom: 6px;
+}
+.section-bar { display: inline-block; width: 40px; height: 3px; background: var(--vivid); margin-bottom: 20px; }
+
+/* ── HOME ── */
+.home-hero {
+  background: linear-gradient(135deg, var(--marine) 0%, var(--marine-mid) 60%, var(--marine) 100%);
+  padding: 56px 40px;
+  margin-bottom: 32px;
+  position: relative;
+  overflow: hidden;
+}
+.home-hero::after {
+  content: 'EG';
+  position: absolute; right: 32px; bottom: -16px;
+  font-size: 120px; font-weight: 900; color: rgba(255,255,255,0.04);
+  letter-spacing: -0.05em; pointer-events: none; user-select: none;
+}
+.hero-tag-pill {
+  display: inline-block;
+  border: 1px solid rgba(0,154,222,0.4);
+  color: var(--vivid); font-size: 10px; font-weight: 700;
+  letter-spacing: 0.12em; text-transform: uppercase;
+  padding: 4px 12px; margin-bottom: 20px;
+}
+.hero-headline {
+  font-size: clamp(22px, 3.5vw, 36px); font-weight: 900;
+  color: white; line-height: 1.15; letter-spacing: -0.02em;
+  margin-bottom: 12px;
+}
+.hero-headline span { color: var(--vivid); }
+.hero-sub { color: rgba(255,255,255,0.6); font-size: 14px; font-weight: 400; max-width: 480px; }
+
+.hero-divider { height: 1px; background: rgba(255,255,255,0.08); margin: 24px 0 0; }
+.hero-quote { color: rgba(255,255,255,0.35); font-size: 12px; font-style: italic; padding-top: 16px; }
+
+.nav-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px,1fr)); gap: 12px; margin-bottom: 32px; }
 
 .nav-card {
-  background: var(--bg2);
+  background: var(--white);
   border: 1px solid var(--border);
-  border-radius: var(--radius);
-  padding: 18px 16px;
+  border-left: 4px solid var(--vivid);
+  padding: 22px 20px;
   cursor: pointer;
-  transition: all 0.2s;
-  text-align: left;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
-.nav-card:hover { border-color: var(--accent); background: var(--accent-dim); }
-.nav-card-icon { font-size: 20px; margin-bottom: 8px; }
-.nav-card-title { color: var(--text); font-size: 13px; font-weight: 700; margin-bottom: 4px; }
-.nav-card-desc { color: var(--muted); font-size: 11px; line-height: 1.5; }
+.nav-card:hover { transform: translateY(-3px); box-shadow: 0 8px 24px rgba(0,58,93,0.1); }
+.nav-card-num { font-size: 10px; font-weight: 700; color: var(--vivid); letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 8px; }
+.nav-card-title { font-size: 14px; font-weight: 700; color: var(--marine); margin-bottom: 4px; }
+.nav-card-desc { font-size: 12px; color: var(--muted); line-height: 1.5; }
+.nav-card-arrow { font-size: 11px; font-weight: 700; color: var(--vivid); margin-top: 12px; letter-spacing: 0.06em; }
 
-.protocol-box {
-  background: var(--bg2);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  padding: 20px;
-  margin-bottom: 16px;
+.pattern-block {
+  background: var(--code-bg);
+  padding: 24px 28px;
+  position: relative;
+  overflow: hidden;
 }
-.protocol-box h3 { color: var(--accent); font-size: 11px; letter-spacing: 0.08em; margin-bottom: 12px; }
-.pattern {
-  background: var(--bg);
-  border: 1px solid var(--border);
-  border-radius: 5px;
-  padding: 12px 14px;
-  font-size: 12px;
-  color: var(--text);
-  line-height: 1.8;
+.pattern-block::before {
+  content: '';
+  position: absolute; left: 0; top: 0; bottom: 0;
+  width: 3px; background: var(--vivid);
 }
-.pattern .comment { color: var(--muted); }
-.pattern .cmd { color: var(--accent); }
+.pattern-label { font-size: 10px; font-weight: 700; color: var(--vivid); letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 16px; }
+.pattern-line { font-family: 'SFMono-Regular', Consolas, monospace; font-size: 12px; line-height: 2; color: var(--code-text); }
+.pattern-line .cmd { color: #7dd3fc; font-weight: 600; }
+.pattern-line .comment { color: rgba(255,255,255,0.3); font-style: italic; }
 
 /* ── Section header ── */
-.section-header { margin-bottom: 20px; }
-.section-title { font-size: 16px; font-weight: 700; color: var(--text); margin-bottom: 4px; }
-.section-sub { color: var(--muted); font-size: 12px; }
+.section-head { margin-bottom: 28px; }
+.section-head h2 { font-size: 22px; font-weight: 800; color: var(--marine); letter-spacing: -0.01em; margin-bottom: 4px; }
+.section-head p { font-size: 13px; color: var(--muted); }
 
 /* ── Domain cards ── */
-.domain-grid { display: flex; flex-direction: column; gap: 10px; }
+.domain-stack { display: flex; flex-direction: column; gap: 10px; }
 
 .domain-card {
-  background: var(--bg2);
+  background: var(--white);
   border: 1px solid var(--border);
-  border-radius: var(--radius);
+  border-left: 4px solid var(--border);
+  transition: border-left-color 0.2s;
   overflow: hidden;
-  transition: border-color 0.15s;
 }
-.domain-card.open { border-color: var(--accent); }
+.domain-card.open { border-left-color: var(--vivid); }
 
-.domain-header {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  padding: 14px 16px;
-  cursor: pointer;
-  user-select: none;
+.domain-toggle {
+  display: flex; align-items: center; gap: 14px;
+  padding: 16px 20px; cursor: pointer; user-select: none;
+  transition: background 0.15s;
 }
-.domain-header:hover { background: rgba(255,255,255,0.02); }
+.domain-toggle:hover { background: var(--vivid-dim); }
 
-.domain-icon { font-size: 16px; flex-shrink: 0; width: 24px; text-align: center; }
-.domain-info { flex: 1; }
-.domain-name { font-size: 13px; font-weight: 700; color: var(--text); }
+.domain-icon-wrap {
+  width: 38px; height: 38px;
+  background: var(--vivid-dim); border: 1px solid var(--vivid-border);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 17px; flex-shrink: 0;
+}
+.domain-info { flex: 1; min-width: 0; }
+.domain-name { font-size: 13px; font-weight: 700; color: var(--marine); }
 .domain-sub { font-size: 11px; color: var(--muted); margin-top: 1px; }
 .domain-badge {
-  font-size: 9px;
-  background: var(--accent-dim);
-  color: var(--accent);
-  border: 1px solid rgba(0,232,122,0.3);
-  border-radius: 4px;
-  padding: 2px 7px;
-  letter-spacing: 0.05em;
-  flex-shrink: 0;
+  font-size: 9px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase;
+  background: var(--vivid-dim); color: var(--vivid);
+  border: 1px solid var(--vivid-border); padding: 2px 8px; flex-shrink: 0;
 }
-.domain-count { font-size: 10px; color: var(--muted); flex-shrink: 0; }
-.domain-chevron { color: var(--muted); font-size: 10px; flex-shrink: 0; transition: transform 0.2s; }
-.domain-card.open .domain-chevron { transform: rotate(180deg); }
+.domain-count { font-size: 11px; color: var(--muted); font-weight: 500; flex-shrink: 0; }
+.domain-chevron { color: var(--muted); font-size: 11px; flex-shrink: 0; transition: transform 0.2s; }
+.domain-card.open .domain-chevron { transform: rotate(180deg); color: var(--vivid); }
 
 .domain-body { display: none; border-top: 1px solid var(--border); }
 .domain-card.open .domain-body { display: block; }
 
-.cmd-list { padding: 8px 0; }
+.cmd-list { padding: 4px 0 8px; }
 
 .cmd-row {
-  display: flex;
-  align-items: flex-start;
-  gap: 10px;
-  padding: 8px 16px;
-  transition: background 0.1s;
-  cursor: default;
+  display: flex; align-items: flex-start; gap: 14px;
+  padding: 10px 20px; transition: background 0.1s;
 }
-.cmd-row:hover { background: rgba(255,255,255,0.025); }
+.cmd-row:hover { background: rgba(0,154,222,0.03); }
 
-.cmd-name {
-  color: var(--accent);
-  font-size: 12px;
-  font-weight: 700;
-  min-width: 130px;
-  flex-shrink: 0;
-}
-.cmd-desc { color: var(--muted); font-size: 11px; flex: 1; line-height: 1.5; }
+.cmd-left { flex: 1; min-width: 0; }
+.cmd-name { font-size: 12px; font-weight: 700; color: var(--vivid); margin-bottom: 2px; font-family: 'SFMono-Regular', Consolas, monospace; }
+.cmd-desc { font-size: 12px; color: var(--muted); }
 .cmd-syntax {
-  color: var(--text);
-  font-size: 10px;
-  background: var(--bg);
-  border: 1px solid var(--border);
-  border-radius: 4px;
-  padding: 3px 8px;
-  margin-top: 3px;
+  margin-top: 5px;
   display: inline-block;
-  max-width: 100%;
-  word-break: break-all;
+  background: var(--code-bg);
+  color: var(--code-text);
+  font-family: 'SFMono-Regular', Consolas, monospace;
+  font-size: 10px;
+  padding: 4px 10px;
+  border-left: 2px solid var(--vivid);
+  max-width: 100%; word-break: break-all; line-height: 1.5;
 }
 
 .copy-btn {
   background: none;
-  border: 1px solid var(--muted2);
-  border-radius: 4px;
-  color: var(--muted);
-  font-family: var(--font);
-  font-size: 9px;
-  padding: 3px 8px;
-  cursor: pointer;
-  flex-shrink: 0;
-  transition: all 0.15s;
-  align-self: flex-start;
-  margin-top: 1px;
-  letter-spacing: 0.04em;
+  border: 1px solid var(--border);
+  color: var(--muted); font-family: 'Inter', sans-serif;
+  font-size: 9px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase;
+  padding: 4px 10px; cursor: pointer; flex-shrink: 0; align-self: flex-start;
+  margin-top: 2px; transition: all 0.15s;
 }
-.copy-btn:hover { border-color: var(--accent); color: var(--accent); }
-.copy-btn.copied { border-color: var(--accent); color: var(--accent); }
+.copy-btn:hover { border-color: var(--vivid); color: var(--vivid); }
+.copy-btn.copied { border-color: #10b981; color: #10b981; }
 
 /* ── Commands tiers ── */
-.tier-block { margin-bottom: 16px; }
+.tier-stack { display: flex; flex-direction: column; gap: 10px; }
 
-.tier-header {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  padding: 12px 14px;
-  background: var(--bg2);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  cursor: pointer;
-  user-select: none;
-  transition: border-color 0.15s;
+.tier-card { background: var(--white); border: 1px solid var(--border); overflow: hidden; }
+.tier-card.open { border-left: 4px solid var(--vivid); }
+
+.tier-toggle {
+  display: flex; align-items: center; gap: 14px;
+  padding: 16px 20px; cursor: pointer; user-select: none;
+  transition: background 0.15s;
 }
-.tier-header:hover { border-color: var(--muted2); }
-.tier-block.open .tier-header { border-color: var(--accent); border-radius: var(--radius) var(--radius) 0 0; }
+.tier-toggle:hover { background: var(--vivid-dim); }
+.tier-card.open .tier-toggle { background: var(--vivid-dim); }
 
-.tier-num {
-  background: var(--accent);
-  color: #000;
-  font-size: 9px;
-  font-weight: 700;
-  width: 18px;
-  height: 18px;
-  border-radius: 3px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+.tier-num-badge {
+  width: 28px; height: 28px;
+  background: var(--vivid); color: white;
+  font-size: 11px; font-weight: 800;
+  display: flex; align-items: center; justify-content: center;
   flex-shrink: 0;
 }
-.tier-label { font-size: 12px; font-weight: 700; color: var(--text); flex: 1; }
-.tier-meta { font-size: 10px; color: var(--muted); }
+.tier-label { font-size: 13px; font-weight: 800; color: var(--marine); flex: 1; letter-spacing: 0.04em; }
+.tier-meta { font-size: 11px; color: var(--muted); }
+.tier-chevron { color: var(--muted); font-size: 11px; flex-shrink: 0; transition: transform 0.2s; }
+.tier-card.open .tier-chevron { transform: rotate(180deg); color: var(--vivid); }
 
-.tier-body {
-  display: none;
-  background: var(--bg2);
-  border: 1px solid var(--accent);
-  border-top: none;
-  border-radius: 0 0 var(--radius) var(--radius);
-}
-.tier-block.open .tier-body { display: block; }
+.tier-body { display: none; border-top: 1px solid var(--border); }
+.tier-card.open .tier-body { display: block; }
 
 .tier-pattern {
-  margin: 12px 14px;
-  background: var(--bg);
-  border: 1px solid var(--border);
-  border-radius: 5px;
-  padding: 10px 12px;
-  font-size: 11px;
-  color: var(--muted);
+  padding: 14px 20px;
+  background: var(--code-bg);
+  font-family: 'SFMono-Regular', Consolas, monospace;
+  font-size: 11px; color: rgba(191,219,254,0.6);
+  border-bottom: 1px solid rgba(255,255,255,0.05);
 }
-.tier-pattern span { color: var(--accent); }
+.tier-pattern strong { color: #7dd3fc; font-weight: 500; }
 
 /* ── Quickstart ── */
-.qs-steps { display: flex; flex-direction: column; gap: 16px; }
-.qs-step {
-  background: var(--bg2);
+.qs-stack { display: flex; flex-direction: column; gap: 16px; }
+
+.qs-card {
+  background: var(--white);
   border: 1px solid var(--border);
-  border-radius: var(--radius);
-  padding: 20px;
-  position: relative;
+  border-left: 4px solid var(--vivid);
+  padding: 28px 28px 24px;
+  transition: transform 0.2s, box-shadow 0.2s;
 }
-.qs-step-num {
-  background: var(--accent);
-  color: #000;
-  font-size: 11px;
-  font-weight: 700;
-  width: 24px;
-  height: 24px;
-  border-radius: 5px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-bottom: 10px;
+.qs-card:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(0,58,93,0.08); }
+
+.qs-num {
+  width: 28px; height: 28px;
+  background: var(--vivid); color: white;
+  font-size: 12px; font-weight: 800;
+  display: flex; align-items: center; justify-content: center;
+  margin-bottom: 14px;
 }
-.qs-step-title { font-size: 13px; font-weight: 700; color: var(--text); margin-bottom: 6px; }
-.qs-step-time { font-size: 10px; color: var(--accent); margin-bottom: 12px; }
-.qs-step-body { color: var(--muted); font-size: 12px; line-height: 1.7; }
-.qs-step-body strong { color: var(--text); }
+.qs-title { font-size: 15px; font-weight: 800; color: var(--marine); margin-bottom: 4px; }
+.qs-time { font-size: 10px; font-weight: 700; color: var(--vivid); letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 14px; }
+.qs-body { font-size: 13px; color: var(--muted); line-height: 1.7; }
+.qs-body strong { color: var(--ink); }
+.qs-body a { color: var(--vivid); text-decoration: none; }
 .qs-code {
-  background: var(--bg);
-  border: 1px solid var(--border);
-  border-radius: 5px;
-  padding: 10px 12px;
-  font-size: 11px;
-  color: var(--text);
-  margin: 10px 0;
-  line-height: 1.8;
-  overflow-x: auto;
+  background: var(--code-bg);
+  font-family: 'SFMono-Regular', Consolas, monospace;
+  font-size: 11px; color: var(--code-text);
+  padding: 14px 16px; margin: 14px 0;
+  line-height: 1.9; border-left: 2px solid var(--vivid);
+  overflow-x: auto; white-space: pre-wrap;
 }
 .qs-check {
-  margin-top: 12px;
-  padding: 8px 12px;
-  background: var(--accent-dim);
-  border-radius: 5px;
-  font-size: 11px;
-  color: var(--accent);
+  margin-top: 14px;
+  background: rgba(0,154,222,0.07);
+  border-left: 3px solid var(--vivid);
+  padding: 8px 14px;
+  font-size: 12px; color: var(--vivid); font-weight: 600;
 }
 
 /* ── Search results ── */
 #search-results { display: none; }
 #search-results.active { display: block; }
-
-.search-count { color: var(--muted); font-size: 11px; margin-bottom: 16px; }
-
-.search-item {
-  display: flex;
-  align-items: flex-start;
-  gap: 10px;
-  padding: 10px 14px;
-  background: var(--bg2);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  margin-bottom: 8px;
+.search-count { font-size: 12px; color: var(--muted); font-weight: 500; margin-bottom: 16px; }
+.search-hit {
+  display: flex; align-items: flex-start; gap: 14px;
+  background: var(--white); border: 1px solid var(--border); border-left: 4px solid var(--vivid);
+  padding: 12px 18px; margin-bottom: 8px; transition: box-shadow 0.15s;
 }
-.search-item-source { color: var(--muted); font-size: 10px; min-width: 100px; flex-shrink: 0; margin-top: 1px; }
-.search-item-name { color: var(--accent); font-size: 12px; font-weight: 700; }
-.search-item-desc { color: var(--muted); font-size: 11px; }
+.search-hit:hover { box-shadow: 0 4px 16px rgba(0,58,93,0.07); }
+.search-source {
+  font-size: 9px; font-weight: 700; color: var(--vivid); text-transform: uppercase;
+  letter-spacing: 0.08em; min-width: 90px; flex-shrink: 0; margin-top: 2px;
+}
 
 /* ── Responsive ── */
-@media (max-width: 480px) {
-  .nav-cards { grid-template-columns: 1fr 1fr; }
-  .cmd-name { min-width: 100px; }
-  #search-wrap { max-width: 160px; }
+@media (max-width: 600px) {
+  #topbar { padding: 12px 16px; gap: 10px; }
+  #tabbar { padding: 0 16px; }
+  #content { padding: 24px 16px 60px; }
+  .home-hero { padding: 36px 24px; }
+  .nav-grid { grid-template-columns: 1fr 1fr; gap: 8px; }
+  #search-wrap { max-width: 150px; }
+  #gh-link { display: none; }
+  .qs-card { padding: 20px 18px; }
 }
 </style>
 </head>
@@ -399,17 +396,23 @@ body {
 
 <div id="header">
   <div id="topbar">
-    <div id="logo">ENTER-GAME <span>/ navigator</span></div>
+    <a id="logo-wrap" href="#" onclick="switchTab('home'); return false;">
+      <div id="logo-mark">EG</div>
+      <div>
+        <div id="logo-text-top">Enter-Game</div>
+        <div id="logo-text-sub">Navigator · v2</div>
+      </div>
+    </a>
     <div id="search-wrap">
       <span id="search-icon">⌕</span>
-      <input type="text" id="search" placeholder="recherche une commande..." autocomplete="off">
+      <input id="search" type="text" placeholder="rechercher une commande..." autocomplete="off">
     </div>
-    <a id="github-link" href="https://github.com/yoanMaisonneuve/Enter-Game" target="_blank">GitHub ↗</a>
+    <a id="gh-link" href="https://github.com/yoanMaisonneuve/Enter-Game" target="_blank">GitHub ↗</a>
   </div>
-  <div id="tabs">
-    <button class="tab active" data-pane="home">🏠 Home</button>
-    <button class="tab" data-pane="skills">⚡ Skills</button>
-    <button class="tab" data-pane="solo">🏢 Solo Founder</button>
+  <div id="tabbar">
+    <button class="tab active" data-pane="home">Accueil</button>
+    <button class="tab" data-pane="skills">⚡ Skills Enterprise</button>
+    <button class="tab" data-pane="solo">🏢 Solo Founder OS</button>
     <button class="tab" data-pane="commands">📟 Commands</button>
     <button class="tab" data-pane="quickstart">🚀 Quickstart</button>
   </div>
@@ -417,7 +420,7 @@ body {
 
 <div id="content">
 
-  <!-- SEARCH RESULTS -->
+  <!-- SEARCH -->
   <div id="search-results">
     <div class="search-count" id="search-count"></div>
     <div id="search-list"></div>
@@ -425,655 +428,606 @@ body {
 
   <!-- HOME -->
   <div class="pane active" id="pane-home">
-    <div class="hero">
-      <div class="hero-tag">You don't start a company. You enter the game.</div>
-      <div class="hero-sub">Protocole IA open-source · Skills enterprise · OS solo founder</div>
+
+    <div class="home-hero fade-in">
+      <div class="hero-tag-pill">Montréal · Open Source · 2026</div>
+      <div class="hero-headline">You don't start a company.<br><span>You enter the game.</span></div>
+      <div class="hero-sub">Protocole IA open-source pour opérer avec l'IA comme co-fondateur permanent — pas comme moteur de recherche.</div>
+      <div class="hero-divider"></div>
+      <div class="hero-quote">"La vraie contrainte n'est pas la puissance de calcul. C'est l'humain qui nourrit le modèle en contexte."</div>
     </div>
-    <div class="nav-cards">
-      <div class="nav-card" onclick="switchTab('quickstart')">
-        <div class="nav-card-icon">🚀</div>
+
+    <div class="nav-grid">
+      <div class="nav-card fade-in fade-in-d1" onclick="switchTab('quickstart')">
+        <div class="nav-card-num">01</div>
         <div class="nav-card-title">Quickstart</div>
-        <div class="nav-card-desc">Opérationnel en 1h — setup mémoire, Claude, hub mobile</div>
+        <div class="nav-card-desc">Opérationnel en moins d'une heure. Setup mémoire, Claude, hub mobile.</div>
+        <div class="nav-card-arrow">COMMENCER →</div>
       </div>
-      <div class="nav-card" onclick="switchTab('skills')">
-        <div class="nav-card-icon">⚡</div>
+      <div class="nav-card fade-in fade-in-d2" onclick="switchTab('skills')">
+        <div class="nav-card-num">02</div>
         <div class="nav-card-title">Skills Enterprise</div>
-        <div class="nav-card-desc">77 commandes · 7 domaines · communication à finance</div>
+        <div class="nav-card-desc">77 commandes · 8 domaines · communication à finance ops.</div>
+        <div class="nav-card-arrow">EXPLORER →</div>
       </div>
-      <div class="nav-card" onclick="switchTab('solo')">
-        <div class="nav-card-icon">🏢</div>
+      <div class="nav-card fade-in fade-in-d3" onclick="switchTab('solo')">
+        <div class="nav-card-num">03</div>
         <div class="nav-card-title">Solo Founder OS</div>
-        <div class="nav-card-desc">9 départements · CEO à Support · lead scans par secteur</div>
+        <div class="nav-card-desc">9 départements · une personne · toute l'entreprise avec l'IA.</div>
+        <div class="nav-card-arrow">EXPLORER →</div>
       </div>
-      <div class="nav-card" onclick="switchTab('commands')">
-        <div class="nav-card-icon">📟</div>
+      <div class="nav-card fade-in fade-in-d4" onclick="switchTab('commands')">
+        <div class="nav-card-num">04</div>
         <div class="nav-card-title">Commandes</div>
-        <div class="nav-card-desc">Couche agentique 7 tiers · contexte → go → handoff</div>
+        <div class="nav-card-desc">Couche agentique 7 tiers · contexte → go → handoff.</div>
+        <div class="nav-card-arrow">VOIR TOUT →</div>
       </div>
     </div>
-    <div class="protocol-box">
-      <h3>PATTERN DE SESSION QUOTIDIEN</h3>
-      <div class="pattern">
-        <span class="comment"># Matin</span><br>
-        <span class="cmd">contexte</span> → charge CONTEXT.md + RECENT.md<br>
-        <span class="cmd">standup</span> → hier · aujourd'hui · bloqueurs<br>
-        <span class="cmd">go [priorité]</span> → exécution immédiate<br><br>
-        <span class="comment"># En cours</span><br>
-        <span class="cmd">idée [texte]</span> → capture → push GitHub<br><br>
-        <span class="comment"># Fin de journée</span><br>
-        <span class="cmd">handoff</span> → log décisions · update RECENT.md
-      </div>
+
+    <div class="pattern-block fade-in">
+      <div class="pattern-label">Pattern de session quotidien</div>
+      <div class="pattern-line"><span class="comment"># Matin</span></div>
+      <div class="pattern-line"><span class="cmd">contexte</span> &nbsp;→ charge CONTEXT.md + RECENT.md — résumé état actuel</div>
+      <div class="pattern-line"><span class="cmd">standup</span> &nbsp;&nbsp;→ hier · aujourd'hui · bloqueurs</div>
+      <div class="pattern-line"><span class="cmd">go [X]</span> &nbsp;&nbsp;&nbsp;→ exécution immédiate, zéro préambule</div>
+      <div class="pattern-line" style="margin-top:8px"><span class="comment"># En cours</span></div>
+      <div class="pattern-line"><span class="cmd">idée [texte]</span> → structure + push GitHub en un geste</div>
+      <div class="pattern-line" style="margin-top:8px"><span class="comment"># Fin de session</span></div>
+      <div class="pattern-line"><span class="cmd">handoff</span> &nbsp;&nbsp;→ log décisions · update RECENT.md · commit</div>
     </div>
-    <div class="protocol-box">
-      <h3>SHORTHAND PROTOCOL</h3>
-      <div class="pattern">
-        <span class="cmd">Git/Enter-Game</span> → <span class="comment">switch de contexte silencieux vers ce projet</span><br>
-        <span class="cmd">Git/Blueprint</span> → <span class="comment">switch vers Blueprint</span><br>
-        <span class="cmd">/vidéo du jour</span> → <span class="comment">scan vidéos IA · digest · journal/daily/</span><br>
-        <span class="cmd">/news IA</span> → <span class="comment">briefing IA 24h · 5-10 items</span><br>
-        <span class="cmd">/standup</span> → <span class="comment">standup depuis activité récente</span><br>
-        <span class="cmd">/rapport: Q2</span> → <span class="comment">rapport structuré à la demande</span>
-      </div>
-    </div>
+
   </div>
 
   <!-- SKILLS -->
   <div class="pane" id="pane-skills">
-    <div class="section-header">
-      <div class="section-title">Skills Enterprise</div>
-      <div class="section-sub">77 commandes · 8 domaines · copier-coller dans Claude</div>
+    <div class="section-head fade-in">
+      <div class="section-label">Skills Enterprise</div>
+      <div class="section-bar"></div>
+      <h2>77 commandes · 8 domaines</h2>
+      <p>Copier-coller dans Claude. Fonctionne dans toute session où CLAUDE.md est chargé.</p>
     </div>
-    <div class="domain-grid" id="skills-grid"></div>
+    <div class="domain-stack" id="skills-grid"></div>
   </div>
 
-  <!-- SOLO FOUNDER -->
+  <!-- SOLO -->
   <div class="pane" id="pane-solo">
-    <div class="section-header">
-      <div class="section-title">Solo Founder OS</div>
-      <div class="section-sub">9 départements · une personne · toute l'entreprise avec l'IA</div>
+    <div class="section-head fade-in">
+      <div class="section-label">Solo Founder OS</div>
+      <div class="section-bar"></div>
+      <h2>9 départements · une personne · toute l'entreprise</h2>
+      <p>De la direction stratégique au support client — l'IA comme co-fondateur permanent.</p>
     </div>
-    <div class="domain-grid" id="solo-grid"></div>
+    <div class="domain-stack" id="solo-grid"></div>
   </div>
 
   <!-- COMMANDS -->
   <div class="pane" id="pane-commands">
-    <div class="section-header">
-      <div class="section-title">Commandes — Couche Agentique</div>
-      <div class="section-sub">7 tiers · fonctionne dans toute session où CLAUDE.md est chargé</div>
+    <div class="section-head fade-in">
+      <div class="section-label">Couche Agentique</div>
+      <div class="section-bar"></div>
+      <h2>7 tiers de commandes</h2>
+      <p>Fonctionne dans toute session Claude où CLAUDE.md est chargé. Voice-first ou texte.</p>
     </div>
-    <div id="commands-list"></div>
+    <div class="tier-stack" id="commands-list"></div>
   </div>
 
   <!-- QUICKSTART -->
   <div class="pane" id="pane-quickstart">
-    <div class="section-header">
-      <div class="section-title">Quickstart</div>
-      <div class="section-sub">Zero to first session · 45–60 minutes · une seule fois</div>
+    <div class="section-head fade-in">
+      <div class="section-label">Quickstart</div>
+      <div class="section-bar"></div>
+      <h2>Zéro à première session · 45–60 minutes · une seule fois</h2>
+      <p>Chaque étape a un checkpoint. Ne saute pas les étapes.</p>
     </div>
-    <div class="qs-steps" id="qs-steps"></div>
+    <div class="qs-stack" id="qs-steps"></div>
   </div>
 
 </div>
 
 <script>
-// ─── DATA ───────────────────────────────────────────────────
+// ─── DATA ────────────────────────────────────────────────────────
 
 const SKILLS = [
   {
-    id: 'communication', icon: '✉', badge: 'Most Used',
-    name: '01 — Communication',
-    sub: 'Email · Meetings · Reports · Internal Comms',
-    cmds: [
-      { name: 'email-draft', desc: "Rédige un email professionnel complet", syntax: 'email-draft: [destinataire] · [sujet] · [ton: formel/direct] · [contexte en 2 lignes]' },
-      { name: 'email-reply', desc: "Génère une réponse à un email existant", syntax: 'email-reply: [coller l\'email reçu] · [ton souhaité] · [objectif de ta réponse]' },
-      { name: 'inbox-triage', desc: "Trie et priorise une boîte mail", syntax: 'inbox-triage: [liste des emails ou sujets] · [priorité: urgent / important / defer / delete]' },
-      { name: 'meeting-summary', desc: "Résumé de réunion + actions", syntax: 'meeting-summary: [notes brutes ou transcript] · [participants] · [décisions attendues]' },
-      { name: 'meeting-prep', desc: "Prépare une réunion avec agenda et questions", syntax: 'meeting-prep: [sujet] · [participants] · [objectif] · [durée]' },
-      { name: 'write-report', desc: "Rédige un rapport structuré", syntax: 'write-report: [sujet] · [audience] · [sections souhaitées] · [données disponibles]' },
-      { name: 'write-proposal', desc: "Rédige une proposition ou offre", syntax: 'write-proposal: [client/contexte] · [solution proposée] · [valeur] · [budget si connu]' },
-      { name: 'rewrite', desc: "Réécrit pour clarté, ton ou audience", syntax: 'rewrite: [coller le texte] · [problème: trop long / trop formel / peu clair] · [cible]' },
-      { name: 'translate', desc: "Traduit en conservant le ton", syntax: 'translate: [texte] · [langue cible] · [ton: formel / neutre / décontracté]' },
-      { name: 'announcement', desc: "Rédige une annonce interne ou externe", syntax: 'announcement: [quoi] · [audience] · [ton] · [appel à l\'action si applicable]' },
+    icon:'✉', badge:'Most Used',
+    name:'01 — Communication',
+    sub:'Email · Réunions · Rapports · Comms internes',
+    cmds:[
+      {name:'email-draft',   desc:"Rédige un email professionnel complet",        syntax:'email-draft: [destinataire] · [sujet] · [ton: formel/direct] · [contexte 2 lignes]'},
+      {name:'email-reply',   desc:"Génère une réponse à un email reçu",           syntax:"email-reply: [coller l'email] · [ton] · [objectif de ta réponse]"},
+      {name:'inbox-triage',  desc:"Trie et priorise une boîte mail",              syntax:'inbox-triage: [liste sujets] · [critère: urgent / important / defer / delete]'},
+      {name:'meeting-summary',desc:"Résumé réunion + actions + décisions",        syntax:'meeting-summary: [notes brutes ou transcript] · [participants] · [objectif]'},
+      {name:'meeting-prep',  desc:"Prépare une réunion avec agenda et questions", syntax:'meeting-prep: [sujet] · [participants] · [objectif] · [durée]'},
+      {name:'write-report',  desc:"Rédige un rapport structuré",                  syntax:'write-report: [sujet] · [audience] · [sections] · [données disponibles]'},
+      {name:'write-proposal',desc:"Rédige une proposition commerciale",           syntax:'write-proposal: [client] · [solution] · [valeur] · [budget si connu]'},
+      {name:'rewrite',       desc:"Réécrit pour clarté, ton ou audience cible",   syntax:"rewrite: [coller le texte] · [problème: trop long/formel] · [cible]"},
+      {name:'translate',     desc:"Traduit en conservant le ton",                 syntax:'translate: [texte] · [langue cible] · [ton: formel / neutre / décontracté]'},
+      {name:'announcement',  desc:"Rédige une annonce interne ou externe",        syntax:"announcement: [quoi] · [audience] · [ton] · [CTA]"},
     ]
   },
   {
-    id: 'planning', icon: '📋', badge: null,
-    name: '02 — Planning',
-    sub: 'Projects · OKRs · Sprints · Retrospectives',
-    cmds: [
-      { name: 'status', desc: "Rapport d'état RAG (Rouge/Ambre/Vert)", syntax: 'status: [projet] · [ce qui avance] · [ce qui bloque] · [date butoir]' },
-      { name: 'standup', desc: "Génère le standup du jour", syntax: 'standup: [activité récente depuis contexte]' },
-      { name: 'prioritize', desc: "Priorise une liste de tâches", syntax: 'prioritize: [liste de tâches] · [contrainte: temps / énergie / dépendances] · [objectif cette semaine]' },
-      { name: 'sprint-plan', desc: "Planifie un sprint avec capacité et priorités", syntax: 'sprint-plan: [backlog] · [durée: 1/2 semaines] · [capacité équipe] · [objectif sprint]' },
-      { name: 'roadmap', desc: "Crée ou met à jour une roadmap", syntax: 'roadmap: [horizon: 30/60/90j ou Q] · [initiatives actives] · [dépendances] · [contraintes]' },
-      { name: 'okr', desc: "Rédige ou révise les OKRs", syntax: 'okr: [période] · [objectif stratégique] · [résultats mesurables souhaités]' },
-      { name: 'retro', desc: "Animation de rétrospective", syntax: 'retro: [sprint ou période] · [ce qui a bien marché] · [ce qui n\'a pas marché] · [format: start-stop-continue]' },
-      { name: 'risques', desc: "Identifie et évalue les risques", syntax: 'risques: [projet ou décision] · [contraintes] · [mitigation souhaitée]' },
-      { name: 'weekly-review', desc: "Bilan de semaine avec wins et priorités", syntax: 'weekly-review: [activité de la semaine] · [objectifs fixés] · [priorités semaine prochaine]' },
+    icon:'📋', badge:null,
+    name:'02 — Planning',
+    sub:'Projets · OKRs · Sprints · Rétrospectives',
+    cmds:[
+      {name:'status',       desc:"Rapport d'état RAG (Rouge/Ambre/Vert)",         syntax:'status: [projet] · [avancé] · [bloqué] · [date butoir]'},
+      {name:'standup',      desc:"Génère le standup du jour",                     syntax:'standup: [activité récente depuis contexte]'},
+      {name:'prioritize',   desc:"Priorise une liste de tâches",                  syntax:'prioritize: [liste] · [contrainte: temps/énergie] · [objectif semaine]'},
+      {name:'sprint-plan',  desc:"Planifie un sprint avec capacité et priorités", syntax:'sprint-plan: [backlog] · [durée] · [capacité] · [objectif sprint]'},
+      {name:'roadmap',      desc:"Crée ou met à jour une roadmap",                syntax:'roadmap: [horizon: 30/60/90j] · [initiatives] · [dépendances]'},
+      {name:'okr',          desc:"Rédige ou révise les OKRs",                     syntax:'okr: [période] · [objectif stratégique] · [résultats mesurables]'},
+      {name:'retro',        desc:"Animation de rétrospective",                    syntax:"retro: [sprint/période] · [bien marché] · [pas marché] · [format]"},
+      {name:'risques',      desc:"Identifie et évalue les risques",               syntax:'risques: [projet] · [contraintes] · [mitigation souhaitée]'},
+      {name:'weekly-review',desc:"Bilan semaine avec wins et priorités",          syntax:'weekly-review: [activité] · [objectifs fixés] · [priorités prochaine semaine]'},
     ]
   },
   {
-    id: 'knowledge', icon: '🧠', badge: null,
-    name: '03 — Knowledge',
-    sub: 'Research · Synthesis · Documentation · Onboarding',
-    cmds: [
-      { name: 'recherche', desc: "Recherche approfondie sur un sujet", syntax: 'recherche: [sujet] · [angle] · [profondeur: surface / moyen / deep] · [usage prévu]' },
-      { name: 'synthèse', desc: "Synthèse d'un document ou ensemble de docs", syntax: 'synthèse: [coller le contenu] · [format: points clés / narrative / tableau] · [audience]' },
-      { name: 'brief', desc: "Brief exécutif (1 page) sur un sujet", syntax: 'brief: [sujet] · [contexte décision] · [niveau de détail]' },
-      { name: 'résumé', desc: "Résumé rapide (3 lignes clés)", syntax: 'résumé: [coller le texte ou URL]' },
-      { name: 'explique', desc: "Explique un concept complexe simplement", syntax: 'explique: [concept] · [niveau: débutant / intermédiaire / expert] · [analogie si souhaitée]' },
-      { name: 'docs', desc: "Rédige la documentation", syntax: 'docs: [sujet ou composant] · [audience: technique / non-technique] · [format: wiki / readme / guide]' },
-      { name: 'competitive', desc: "Analyse concurrentielle rapide", syntax: 'competitive: [ton produit / offre] · [concurrents à analyser] · [critères de comparaison]' },
-      { name: 'faq', desc: "Génère une FAQ à partir de contenu", syntax: 'faq: [coller le contenu source] · [audience] · [nb questions souhaité]' },
-      { name: 'onboard', desc: "Crée le guide d'onboarding", syntax: 'onboard: [rôle] · [outils principaux] · [ressources clés] · [premières semaines]' },
+    icon:'🧠', badge:null,
+    name:'03 — Knowledge',
+    sub:'Recherche · Synthèse · Documentation · Onboarding',
+    cmds:[
+      {name:'recherche',  desc:"Recherche approfondie sur un sujet",              syntax:'recherche: [sujet] · [angle] · [profondeur: surface/deep] · [usage prévu]'},
+      {name:'synthèse',   desc:"Synthèse d'un document ou ensemble de docs",     syntax:'synthèse: [coller le contenu] · [format: points clés/narrative] · [audience]'},
+      {name:'brief',      desc:"Brief exécutif (1 page) sur un sujet",           syntax:'brief: [sujet] · [contexte décision] · [niveau de détail]'},
+      {name:'résumé',     desc:"Résumé rapide (3 lignes clés)",                  syntax:'résumé: [coller le texte]'},
+      {name:'explique',   desc:"Explique un concept complexe simplement",        syntax:'explique: [concept] · [niveau: débutant/expert] · [analogie si souhaitée]'},
+      {name:'docs',       desc:"Rédige la documentation",                        syntax:'docs: [sujet] · [audience: tech/non-tech] · [format: wiki/readme]'},
+      {name:'competitive',desc:"Analyse concurrentielle rapide",                 syntax:'competitive: [ton produit] · [concurrents] · [critères de comparaison]'},
+      {name:'faq',        desc:"Génère une FAQ depuis du contenu",               syntax:'faq: [coller le contenu source] · [audience] · [nb questions]'},
+      {name:'onboard',    desc:"Crée le guide d'onboarding",                    syntax:"onboard: [rôle] · [outils principaux] · [ressources clés] · [premières semaines]"},
     ]
   },
   {
-    id: 'code', icon: '💻', badge: null,
-    name: '04 — Code',
-    sub: 'Review · Debug · Architecture · Ops',
-    cmds: [
-      { name: 'revue', desc: "Code review complet", syntax: 'revue: [coller le code ou diff] · [contexte] · [focus: sécurité / perf / lisibilité]' },
-      { name: 'debug', desc: "Session de debug structurée", syntax: 'debug: [problème] · [message d\'erreur] · [ce que tu as déjà essayé]' },
-      { name: 'spec-tech', desc: "Spec technique pour une feature", syntax: 'spec-tech: [feature] · [contraintes] · [stack] · [dépendances]' },
-      { name: 'architecture', desc: "ADR avec options et trade-offs", syntax: 'architecture: [problème] · [options considérées] · [contraintes: perf / coût / équipe]' },
-      { name: 'test', desc: "Stratégie de test pour un composant", syntax: 'test: [composant ou feature] · [stack de test] · [niveau: unit / intégration / e2e]' },
-      { name: 'refactor', desc: "Plan de refactoring", syntax: 'refactor: [composant] · [problème actuel] · [objectif] · [contrainte: pas casser prod]' },
-      { name: 'incident', desc: "Triage et communication incident", syntax: 'incident: [symptôme] · [impact] · [ce qu\'on sait] · [actions en cours]' },
-      { name: 'postmortem', desc: "Postmortem blameless", syntax: 'postmortem: [incident] · [timeline] · [root cause] · [actions correctives]' },
-      { name: 'security-review', desc: "Audit sécurité du code ou de l'infra", syntax: 'security-review: [scope: code / config / infra] · [stack] · [menaces prioritaires]' },
+    icon:'💻', badge:null,
+    name:'04 — Code',
+    sub:'Review · Debug · Architecture · Ops',
+    cmds:[
+      {name:'revue',          desc:"Code review complet",                syntax:'revue: [coller le code ou diff] · [contexte] · [focus: sécu/perf/lisibilité]'},
+      {name:'debug',          desc:"Session de debug structurée",        syntax:"debug: [problème] · [message d'erreur] · [ce que tu as déjà essayé]"},
+      {name:'spec-tech',      desc:"Spec technique pour une feature",    syntax:'spec-tech: [feature] · [contraintes] · [stack] · [dépendances]'},
+      {name:'architecture',   desc:"ADR avec options et trade-offs",     syntax:'architecture: [problème] · [options] · [contraintes: perf/coût/équipe]'},
+      {name:'test',           desc:"Stratégie de test pour un composant",syntax:'test: [composant] · [stack de test] · [niveau: unit/intégration/e2e]'},
+      {name:'incident',       desc:"Triage et communication incident",   syntax:'incident: [symptôme] · [impact] · [ce qu\'on sait] · [actions en cours]'},
+      {name:'postmortem',     desc:"Postmortem blameless",               syntax:'postmortem: [incident] · [timeline] · [root cause] · [actions correctives]'},
+      {name:'security-review',desc:"Audit sécurité code ou infra",       syntax:'security-review: [scope] · [stack] · [menaces prioritaires]'},
     ]
   },
   {
-    id: 'people', icon: '👥', badge: null,
-    name: '05 — People',
-    sub: 'Hiring · Feedback · HR · Team',
-    cmds: [
-      { name: 'job-post', desc: "Rédige une offre d'emploi", syntax: 'job-post: [rôle] · [équipe] · [stack si technique] · [ton de l\'entreprise]' },
-      { name: 'interview-prep', desc: "Prépare une grille d'entretien", syntax: 'interview-prep: [rôle] · [compétences clés] · [type: comportemental / technique / culture]' },
-      { name: 'feedback', desc: "Rédige un feedback constructif", syntax: 'feedback: [contexte] · [comportement observé] · [impact] · [attentes]' },
-      { name: '1on1', desc: "Agenda de 1:1 avec questions ciblées", syntax: '1on1: [rapport] · [dernière session: résultats] · [focus: carrière / projet / bien-être]' },
-      { name: 'pip', desc: "Plan d'amélioration de performance", syntax: 'pip: [rôle] · [problème de performance] · [objectifs mesurables] · [durée]' },
-      { name: 'recognition', desc: "Message de reconnaissance", syntax: 'recognition: [personne] · [accomplissement] · [impact sur l\'équipe / projet]' },
+    icon:'👥', badge:null,
+    name:'05 — People',
+    sub:'Hiring · Feedback · HR · Équipe',
+    cmds:[
+      {name:'job-post',      desc:"Rédige une offre d'emploi",          syntax:"job-post: [rôle] · [équipe] · [stack si tech] · [ton]"},
+      {name:'interview-prep',desc:"Prépare une grille d'entretien",     syntax:'interview-prep: [rôle] · [compétences clés] · [type: comportemental/tech]'},
+      {name:'feedback',      desc:"Rédige un feedback constructif",     syntax:'feedback: [contexte] · [comportement observé] · [impact] · [attentes]'},
+      {name:'1on1',          desc:"Agenda 1:1 avec questions ciblées",  syntax:"1on1: [rapport] · [dernière session] · [focus: carrière/projet/bien-être]"},
+      {name:'pip',           desc:"Plan d'amélioration de performance", syntax:'pip: [rôle] · [problème perf] · [objectifs mesurables] · [durée]'},
+      {name:'recognition',   desc:"Message de reconnaissance",          syntax:'recognition: [personne] · [accomplissement] · [impact équipe]'},
     ]
   },
   {
-    id: 'customer', icon: '🤝', badge: null,
-    name: '06 — Customer',
-    sub: 'Sales · Support · CRM · Account',
-    cmds: [
-      { name: 'outreach', desc: "Email de prospection personnalisé", syntax: 'outreach: [prospect] · [contexte / angle] · [ton: formel / conversationnel] · [CTA]' },
-      { name: 'follow-up', desc: "Relance après contact ou réunion", syntax: 'follow-up: [contexte précédent] · [délai écoulé] · [prochaine étape souhaitée]' },
-      { name: 'sales-proposal', desc: "Proposition commerciale structurée", syntax: 'sales-proposal: [client] · [problème identifié] · [solution] · [prix / conditions]' },
-      { name: 'battlecard', desc: "Carte de bataille concurrentielle", syntax: 'battlecard: [concurrent] · [notre différenciateur] · [objections typiques]' },
-      { name: 'objection', desc: "Réponse à une objection de vente", syntax: 'objection: [objection reçue] · [contexte client] · [ton souhaité]' },
-      { name: 'ticket', desc: "Réponse à un ticket support", syntax: 'ticket: [coller le ticket] · [contexte produit] · [politique de support]' },
-      { name: 'escalation', desc: "Gestion d'une escalation client", syntax: 'escalation: [problème] · [impact client] · [ce qu\'on a fait] · [prochaine étape]' },
-      { name: 'case-study', desc: "Rédige une étude de cas client", syntax: 'case-study: [client] · [problème initial] · [solution déployée] · [résultats mesurés]' },
+    icon:'🤝', badge:null,
+    name:'06 — Customer',
+    sub:'Ventes · Support · CRM · Account',
+    cmds:[
+      {name:'outreach',      desc:"Email de prospection personnalisé",   syntax:'outreach: [prospect] · [angle] · [ton] · [CTA]'},
+      {name:'follow-up',     desc:"Relance après contact ou réunion",    syntax:'follow-up: [contexte précédent] · [délai] · [prochaine étape]'},
+      {name:'sales-proposal',desc:"Proposition commerciale structurée",  syntax:'sales-proposal: [client] · [problème] · [solution] · [prix/conditions]'},
+      {name:'battlecard',    desc:"Carte de bataille concurrentielle",   syntax:'battlecard: [concurrent] · [notre différenciateur] · [objections typiques]'},
+      {name:'objection',     desc:"Réponse à une objection de vente",   syntax:"objection: [objection reçue] · [contexte client] · [ton]"},
+      {name:'ticket',        desc:"Réponse à un ticket support",        syntax:'ticket: [coller le ticket] · [contexte produit] · [politique]'},
+      {name:'case-study',    desc:"Rédige une étude de cas client",     syntax:'case-study: [client] · [problème initial] · [solution] · [résultats]'},
     ]
   },
   {
-    id: 'finance', icon: '📊', badge: null,
-    name: '07 — Finance & Ops',
-    sub: 'Finance · Process · Compliance · Vendor',
-    cmds: [
-      { name: 'financial-report', desc: "Rapport financier narratif", syntax: 'financial-report: [données: coller tableau ou chiffres] · [période] · [audience]' },
-      { name: 'budget', desc: "Revue ou construction de budget", syntax: 'budget: [période] · [postes principaux] · [objectif: réduction / planification / révision]' },
-      { name: 'forecast', desc: "Prévision financière", syntax: 'forecast: [données historiques] · [hypothèses] · [horizon] · [scénarios: base / optimiste / pessimiste]' },
-      { name: 'process-doc', desc: "Documentation d'un processus", syntax: 'process-doc: [processus] · [propriétaire] · [étapes] · [exceptions connues]' },
-      { name: 'sop', desc: "Procédure opérationnelle standard", syntax: 'sop: [tâche] · [fréquence] · [acteurs] · [étapes détaillées] · [critères de succès]' },
-      { name: 'vendor-review', desc: "Évaluation fournisseur", syntax: 'vendor-review: [fournisseur] · [critères: prix / qualité / risque] · [alternatives] · [recommandation souhaitée]' },
-      { name: 'compliance', desc: "Checklist conformité", syntax: 'compliance: [cadre: RGPD / SOC2 / ISO] · [scope] · [état actuel]' },
+    icon:'📊', badge:null,
+    name:'07 — Finance & Ops',
+    sub:'Finance · Process · Compliance · Vendor',
+    cmds:[
+      {name:'financial-report',desc:"Rapport financier narratif",         syntax:'financial-report: [données/chiffres] · [période] · [audience]'},
+      {name:'budget',          desc:"Revue ou construction de budget",    syntax:'budget: [période] · [postes] · [objectif: réduction/planification]'},
+      {name:'forecast',        desc:"Prévision financière multi-scénarios",syntax:'forecast: [historique] · [hypothèses] · [horizon] · [scénarios]'},
+      {name:'sop',             desc:"Procédure opérationnelle standard",  syntax:'sop: [tâche] · [fréquence] · [acteurs] · [étapes] · [succès = ?]'},
+      {name:'vendor-review',   desc:"Évaluation fournisseur",            syntax:'vendor-review: [fournisseur] · [critères] · [alternatives]'},
+      {name:'compliance',      desc:"Checklist conformité",              syntax:'compliance: [cadre: RGPD/SOC2/ISO] · [scope] · [état actuel]'},
     ]
   },
   {
-    id: 'shortcuts', icon: '⌨', badge: 'Protocol',
-    name: '08 — Shorthand Protocol',
-    sub: 'Git/ context switch · /command dispatch · install in 5 min',
-    cmds: [
-      { name: 'Git/[nom]', desc: "Switch de contexte vers un projet. Claude charge le CLAUDE.md correspondant silencieusement.", syntax: 'Git/Enter-Game  →  ✓ Enter-Game chargé — [état en 5 mots]' },
-      { name: '/[commande]', desc: "Exécute une tâche enregistrée dans SHORTCUTS_REGISTRY.md. Zéro préambule.", syntax: '/vidéo du jour  →  scan + digest + sauvegarde' },
-      { name: '/[commande]: [params]', desc: "Tâche avec paramètres", syntax: '/rapport: Q2 ventes  →  rapport structuré' },
-      { name: '/news IA', desc: "Briefing IA 24h — 5 à 10 items avec impact", syntax: '/news IA  →  journal/daily/YYYY-MM-DD-news.md' },
-      { name: '/vidéo du jour', desc: "Meilleures vidéos IA du jour — liste avec contexte", syntax: '/vidéo du jour  →  journal/daily/YYYY-MM-DD-videos.md' },
-      { name: '/standup', desc: "Standup quotidien depuis activité récente", syntax: '/standup  →  Hier · Aujourd\'hui · Bloqueurs' },
-      { name: '/handoff', desc: "Fin de session — log + RECENT.md + commit", syntax: '/handoff  →  résumé + confirmation commit' },
+    icon:'⌨', badge:'Protocol',
+    name:'08 — Shorthand Protocol',
+    sub:'Git/ switch de contexte · /command dispatch · install en 5 min',
+    cmds:[
+      {name:'Git/[projet]',         desc:"Switch de contexte silencieux. Claude charge le CLAUDE.md correspondant et confirme en 1 ligne.",  syntax:'Git/Enter-Game  →  ✓ Enter-Game chargé — [état en 5 mots]'},
+      {name:'/[commande]',          desc:"Dispatch d'une tâche enregistrée dans SHORTCUTS_REGISTRY.md. Zéro préambule.",                    syntax:'/vidéo du jour  →  scan + digest + sauvegarde dans journal/'},
+      {name:'/[commande]: [params]',desc:"Tâche avec paramètres",                                                                           syntax:'/rapport: Q2 ventes  →  rapport structuré généré'},
+      {name:'/news IA',             desc:"Briefing IA 24h — 5 à 10 items avec impact",                                                      syntax:'/news IA  →  journal/daily/YYYY-MM-DD-news.md'},
+      {name:'/vidéo du jour',       desc:"Meilleures vidéos IA du jour",                                                                    syntax:'/vidéo du jour  →  journal/daily/YYYY-MM-DD-videos.md'},
+      {name:'/standup',             desc:"Standup quotidien depuis activité récente",                                                       syntax:"/standup  →  Hier · Aujourd'hui · Bloqueurs"},
+      {name:'/handoff',             desc:"Fin de session — log + RECENT.md + commit",                                                       syntax:'/handoff  →  résumé session + confirmation commit'},
     ]
   },
 ];
 
 const SOLO = [
   {
-    id: 'ceo', icon: '🎯', badge: 'Meta-layer',
-    name: '01 — CEO / Direction',
-    sub: 'Stratégie · Vision · Décisions · Financement',
-    cmds: [
-      { name: 'vision', desc: "Articule ta vision produit / entreprise", syntax: 'vision: [ce que tu construis] · [pour qui] · [pourquoi maintenant] · [à quoi ressemble la victoire]' },
-      { name: 'stratégie', desc: "Session stratégie trimestrielle", syntax: 'stratégie: [état actuel: revenus, users, stage] · [plus grande opportunité] · [plus grande menace] · [horizon: Q / 6mo]' },
-      { name: 'priorités', desc: "Top 3 priorités de la semaine", syntax: 'priorités: [tout ce que tu as en tête] · [objectif semaine] · [contraintes: temps / énergie]' },
-      { name: 'décide', desc: "Framework de décision complexe", syntax: 'décide: [décision à prendre] · [options] · [critères] · [date limite]' },
-      { name: 'investor-update', desc: "Update investisseurs mensuel", syntax: 'investor-update: [mois] · [métriques clés] · [progrès vs objectifs] · [prochaine étape]' },
-      { name: 'pitch', desc: "Pitch en 30 secondes à 3 minutes", syntax: 'pitch: [audience] · [durée: 30s / 1min / 3min] · [stage] · [ask si applicable]' },
-      { name: 'north-star', desc: "Identifie ta métrique étoile du nord", syntax: 'north-star: [modèle business] · [ce qui crée de la valeur pour les clients] · [métriques disponibles]' },
-      { name: 'weekly-ceo', desc: "Check-in CEO hebdomadaire", syntax: 'weekly-ceo: [semaine écoulée] · [objectif semaine prochaine] · [un risque à monitorer]' },
+    icon:'🎯', badge:'Meta-layer',
+    name:'01 — CEO / Direction',
+    sub:'Stratégie · Vision · Décisions · Fundraising',
+    cmds:[
+      {name:'vision',         desc:"Articule ta vision produit / entreprise",           syntax:'vision: [ce que tu construis] · [pour qui] · [pourquoi maintenant] · [victoire = ?]'},
+      {name:'stratégie',      desc:"Session stratégie trimestrielle",                  syntax:'stratégie: [état actuel] · [plus grande opportunité] · [plus grande menace] · [horizon]'},
+      {name:'priorités',      desc:"Top 3 priorités de la semaine",                    syntax:'priorités: [tout ce que tu as en tête] · [objectif semaine] · [contraintes]'},
+      {name:'décide',         desc:"Framework de décision complexe",                   syntax:'décide: [décision] · [options] · [critères] · [date limite]'},
+      {name:'investor-update',desc:"Update investisseurs mensuel",                     syntax:'investor-update: [mois] · [métriques] · [progrès vs objectifs] · [prochaine étape]'},
+      {name:'pitch',          desc:"Pitch 30s à 3 minutes selon l'audience",           syntax:'pitch: [audience] · [durée: 30s/1min/3min] · [stage] · [ask]'},
+      {name:'north-star',     desc:"Identifie ta métrique étoile du nord",             syntax:'north-star: [modèle business] · [ce qui crée de la valeur] · [métriques dispo]'},
+      {name:'weekly-ceo',     desc:"Check-in CEO hebdomadaire",                        syntax:'weekly-ceo: [semaine écoulée] · [objectif semaine prochaine] · [risque à monitorer]'},
     ]
   },
   {
-    id: 'ventes', icon: '💰', badge: 'Lead Scans',
-    name: '02 — Ventes',
-    sub: 'Lead Gen · Outreach · Pipeline · Closing',
-    cmds: [
-      { name: 'lead-scan: construction', desc: "Scan leads secteur Construction", syntax: 'lead-scan: construction · [zone géo] · [taille cible: PME/ETI] · [signal: expansion / recrutement / nouveaux projets]' },
-      { name: 'lead-scan: manufacturing', desc: "Scan leads secteur Manufacturier", syntax: 'lead-scan: manufacturing · [zone géo] · [taille cible] · [signal: modernisation / ERP / automatisation]' },
-      { name: 'lead-scan: logistique', desc: "Scan leads secteur Logistique", syntax: 'lead-scan: logistique · [zone géo] · [taille cible] · [signal: expansion réseau / optimisation]' },
-      { name: 'lead-scan: finance', desc: "Scan leads secteur Finance / Assurance", syntax: 'lead-scan: finance · [zone géo] · [taille cible] · [signal: conformité / digitalisation / M&A]' },
-      { name: 'lead-scan: santé', desc: "Scan leads secteur Santé", syntax: 'lead-scan: santé · [zone géo] · [type: clinique / hôpital / pharma] · [signal: dossier électronique / IA clinique]' },
-      { name: 'lead-scan: tech', desc: "Scan leads secteur Tech / SaaS", syntax: 'lead-scan: tech · [zone géo] · [taille cible] · [signal: levée de fonds / recrutement / nouveau produit]' },
-      { name: 'icp', desc: "Définit ton profil client idéal", syntax: 'icp: [clients actuels qui réussissent] · [deal size moyen] · [secteur] · [ce qui les a convaincus]' },
-      { name: 'cold-email', desc: "Email froid personnalisé", syntax: 'cold-email: [prospect] · [angle / pain point] · [ton: direct / conversationnel] · [CTA]' },
-      { name: 'sequence', desc: "Séquence outreach multi-touches", syntax: 'sequence: [canal: email / LinkedIn / téléphone] · [nb touches] · [ICP] · [objectif: RDV / démo / réponse]' },
-      { name: 'demo-prep', desc: "Préparation démo avec plan et questions", syntax: 'demo-prep: [prospect] · [produit / feature] · [what they care about] · [durée]' },
-      { name: 'close', desc: "Stratégie de closing pour une opportunité", syntax: 'close: [prospect] · [stade pipeline] · [objections connues] · [date cible]' },
-      { name: 'pipeline', desc: "Revue pipeline avec priorités", syntax: 'pipeline: [liste des opportunités] · [stade] · [valeur estimée] · [prochaine action]' },
+    icon:'💰', badge:'Lead Scans',
+    name:'02 — Ventes',
+    sub:'Lead Gen · Outreach · Pipeline · Closing',
+    cmds:[
+      {name:'lead-scan: construction',  desc:"Scan leads Construction",            syntax:'lead-scan: construction · [zone géo] · [taille: PME/ETI] · [signal: expansion/projets]'},
+      {name:'lead-scan: manufacturing', desc:"Scan leads Manufacturier",           syntax:'lead-scan: manufacturing · [zone géo] · [taille] · [signal: automatisation/ERP]'},
+      {name:'lead-scan: logistique',    desc:"Scan leads Logistique",              syntax:'lead-scan: logistique · [zone géo] · [taille] · [signal: expansion réseau]'},
+      {name:'lead-scan: finance',       desc:"Scan leads Finance / Assurance",     syntax:'lead-scan: finance · [zone géo] · [taille] · [signal: conformité/digitalisation]'},
+      {name:'lead-scan: santé',         desc:"Scan leads Santé",                   syntax:'lead-scan: santé · [zone géo] · [type: clinique/pharma] · [signal: IA clinique]'},
+      {name:'lead-scan: tech',          desc:"Scan leads Tech / SaaS",             syntax:'lead-scan: tech · [zone géo] · [taille] · [signal: levée/recrutement]'},
+      {name:'icp',                      desc:"Définit le profil client idéal",     syntax:'icp: [clients qui réussissent] · [deal size] · [secteur] · [ce qui les a convaincus]'},
+      {name:'cold-email',               desc:"Email froid personnalisé",           syntax:'cold-email: [prospect] · [angle/pain] · [ton] · [CTA]'},
+      {name:'sequence',                 desc:"Séquence outreach multi-touches",    syntax:'sequence: [canal] · [nb touches] · [ICP] · [objectif: RDV/démo]'},
+      {name:'demo-prep',                desc:"Préparation démo",                   syntax:"demo-prep: [prospect] · [ce qu'ils veulent] · [durée]"},
+      {name:'close',                    desc:"Stratégie de closing",               syntax:'close: [prospect] · [stade] · [objections] · [date cible]'},
+      {name:'pipeline',                 desc:"Revue pipeline avec priorités",      syntax:'pipeline: [liste opps] · [stade] · [valeur] · [prochaine action]'},
     ]
   },
   {
-    id: 'marketing', icon: '📣', badge: null,
-    name: '03 — Marketing',
-    sub: 'Content · SEO · Campagnes · Brand',
-    cmds: [
-      { name: 'content', desc: "Rédige du contenu marketing", syntax: 'content: [format: blog / social / newsletter] · [sujet] · [audience] · [CTA]' },
-      { name: 'seo-audit', desc: "Audit SEO rapide d'une page", syntax: 'seo-audit: [URL ou contenu] · [mot-clé cible] · [audience]' },
-      { name: 'campaign', desc: "Planifie une campagne de bout en bout", syntax: 'campaign: [objectif] · [audience] · [budget] · [canaux] · [durée]' },
-      { name: 'brand-voice', desc: "Définit ou clarifie la voix de marque", syntax: 'brand-voice: [valeurs] · [ton souhaité] · [exemples de marques proches] · [à éviter]' },
-      { name: 'newsletter', desc: "Rédige une newsletter", syntax: 'newsletter: [thème] · [audience] · [ton] · [fréquence: hebdo / mensuel]' },
-      { name: 'launch', desc: "Plan de lancement produit", syntax: 'launch: [produit] · [date cible] · [audience] · [canaux de distribution]' },
+    icon:'📣', badge:null,
+    name:'03 — Marketing',
+    sub:'Content · SEO · Campagnes · Brand',
+    cmds:[
+      {name:'content',     desc:"Rédige du contenu marketing",             syntax:'content: [format: blog/social/newsletter] · [sujet] · [audience] · [CTA]'},
+      {name:'seo-audit',   desc:"Audit SEO rapide",                       syntax:'seo-audit: [URL ou contenu] · [mot-clé cible] · [audience]'},
+      {name:'campaign',    desc:"Planifie une campagne bout en bout",     syntax:'campaign: [objectif] · [audience] · [budget] · [canaux] · [durée]'},
+      {name:'brand-voice', desc:"Définit ou clarifie la voix de marque", syntax:"brand-voice: [valeurs] · [ton] · [marques proches] · [à éviter]"},
+      {name:'newsletter',  desc:"Rédige une newsletter",                  syntax:'newsletter: [thème] · [audience] · [ton] · [fréquence]'},
+      {name:'launch',      desc:"Plan de lancement produit",             syntax:'launch: [produit] · [date] · [audience] · [canaux]'},
     ]
   },
   {
-    id: 'produit', icon: '🔧', badge: null,
-    name: '04 — Produit',
-    sub: 'Spec · Roadmap · User Stories · Priorisation',
-    cmds: [
-      { name: 'spec', desc: "Rédige un PRD ou spec produit", syntax: 'spec: [feature] · [problème utilisateur] · [contraintes] · [succès = ?]' },
-      { name: 'roadmap-produit', desc: "Roadmap produit Now/Next/Later", syntax: 'roadmap-produit: [initiatives actives] · [horizon] · [contraintes équipe / tech] · [objectif Q]' },
-      { name: 'user-story', desc: "Génère des user stories", syntax: 'user-story: [feature] · [persona] · [format: En tant que... Je veux... Afin de...]' },
-      { name: 'feedback-synthesis', desc: "Synthèse retours utilisateurs", syntax: 'feedback-synthesis: [coller les retours] · [angle: pain points / feature requests / bugs]' },
-      { name: 'mvp', desc: "Définit le MVP — ce qui reste, ce qui coupe", syntax: 'mvp: [vision produit] · [timeline] · [ressources] · [hypothèse à valider]' },
+    icon:'🔧', badge:null,
+    name:'04 — Produit',
+    sub:'Spec · Roadmap · User Stories · Priorisation',
+    cmds:[
+      {name:'spec',              desc:"Rédige un PRD / spec produit",               syntax:'spec: [feature] · [problème user] · [contraintes] · [succès = ?]'},
+      {name:'roadmap-produit',   desc:"Roadmap Now/Next/Later",                    syntax:'roadmap-produit: [initiatives] · [horizon] · [contraintes] · [objectif Q]'},
+      {name:'user-story',        desc:"Génère des user stories",                   syntax:'user-story: [feature] · [persona] · [format: En tant que / Je veux / Afin de]'},
+      {name:'feedback-synthesis',desc:"Synthèse retours utilisateurs",             syntax:'feedback-synthesis: [coller les retours] · [angle: pain/feature/bugs]'},
+      {name:'mvp',               desc:"Définit le MVP — ce qui reste, ce qui coupe",syntax:'mvp: [vision] · [timeline] · [ressources] · [hypothèse à valider]'},
     ]
   },
   {
-    id: 'tech', icon: '⚙', badge: null,
-    name: '05 — Tech',
-    sub: 'Architecture · Dev · Infra · Sécurité',
-    cmds: [
-      { name: 'architecture', desc: "ADR — choix d'architecture avec trade-offs", syntax: 'architecture: [problème] · [options] · [contraintes] · [horizon]' },
-      { name: 'deploy', desc: "Checklist de déploiement", syntax: 'deploy: [composant] · [env: staging / prod] · [changements] · [rollback plan]' },
-      { name: 'debug', desc: "Session de debug structurée", syntax: 'debug: [problème] · [erreur] · [ce qui a changé récemment]' },
-      { name: 'tech-debt', desc: "Audit et priorisation de la dette technique", syntax: 'tech-debt: [codebase ou composant] · [symptômes] · [impact business]' },
-      { name: 'security', desc: "Revue sécurité", syntax: 'security: [scope] · [stack] · [menaces prioritaires]' },
+    icon:'⚙', badge:null,
+    name:'05 — Tech',
+    sub:'Architecture · Dev · Infra · Sécurité',
+    cmds:[
+      {name:'architecture',desc:"ADR — choix d'architecture avec trade-offs", syntax:'architecture: [problème] · [options] · [contraintes] · [horizon]'},
+      {name:'deploy',      desc:"Checklist de déploiement",                  syntax:'deploy: [composant] · [env: staging/prod] · [changements] · [rollback plan]'},
+      {name:'debug',       desc:"Session de debug structurée",               syntax:"debug: [problème] · [erreur] · [ce qui a changé récemment]"},
+      {name:'tech-debt',   desc:"Audit dette technique",                     syntax:'tech-debt: [codebase] · [symptômes] · [impact business]'},
+      {name:'security',    desc:"Revue sécurité",                           syntax:'security: [scope] · [stack] · [menaces prioritaires]'},
     ]
   },
   {
-    id: 'operations', icon: '⚡', badge: null,
-    name: '06 — Opérations',
-    sub: 'Process · SOP · Vendor · Compliance',
-    cmds: [
-      { name: 'sop', desc: "Procédure opérationnelle standard", syntax: 'sop: [processus] · [acteurs] · [étapes] · [critères de succès]' },
-      { name: 'process', desc: "Documente ou optimise un processus", syntax: 'process: [processus] · [problème actuel] · [objectif: vitesse / qualité / coût]' },
-      { name: 'vendor', desc: "Évalue un fournisseur", syntax: 'vendor: [fournisseur] · [critères] · [alternatives] · [budget]' },
-      { name: 'reporting', desc: "Template de reporting hebdo / mensuel", syntax: 'reporting: [audience] · [métriques clés] · [période] · [format souhaité]' },
+    icon:'⚡', badge:null,
+    name:'06 — Opérations',
+    sub:'Process · SOP · Vendor · Compliance',
+    cmds:[
+      {name:'sop',      desc:"Procédure opérationnelle standard",      syntax:'sop: [processus] · [acteurs] · [étapes] · [succès = ?]'},
+      {name:'process',  desc:"Documente ou optimise un processus",     syntax:'process: [processus] · [problème actuel] · [objectif: vitesse/qualité/coût]'},
+      {name:'vendor',   desc:"Évalue un fournisseur",                  syntax:'vendor: [fournisseur] · [critères] · [alternatives] · [budget]'},
+      {name:'reporting',desc:"Template de reporting hebdo / mensuel",  syntax:'reporting: [audience] · [métriques] · [période] · [format]'},
     ]
   },
   {
-    id: 'finance', icon: '💳', badge: null,
-    name: '07 — Finance',
-    sub: 'Trésorerie · Budget · Runway · Investisseurs',
-    cmds: [
-      { name: 'trésorerie', desc: "Analyse de trésorerie et runway", syntax: 'trésorerie: [solde actuel] · [dépenses mensuelles] · [revenus récurrents] · [prévisions 3-6 mois]' },
-      { name: 'budget', desc: "Construction ou révision de budget", syntax: 'budget: [période] · [revenus prévus] · [postes de dépense] · [objectif: rentabilité / croissance]' },
-      { name: 'p&l', desc: "Revue P&L narratif", syntax: 'p&l: [chiffres du mois] · [comparaison mois précédent / objectif] · [audience]' },
-      { name: 'invoice', desc: "Génère ou rédige une facture", syntax: 'invoice: [client] · [service rendu] · [montant] · [conditions de paiement]' },
+    icon:'💳', badge:null,
+    name:'07 — Finance',
+    sub:'Trésorerie · Budget · Runway · Investisseurs',
+    cmds:[
+      {name:'trésorerie',desc:"Analyse trésorerie et runway",         syntax:'trésorerie: [solde] · [dépenses/mois] · [revenus récurrents] · [prévisions 3-6 mois]'},
+      {name:'budget',    desc:"Construction ou révision de budget",   syntax:'budget: [période] · [revenus prévus] · [postes de dépense] · [objectif]'},
+      {name:'p&l',       desc:"Revue P&L narratif",                  syntax:'p&l: [chiffres du mois] · [comparaison mois précédent] · [audience]'},
+      {name:'invoice',   desc:"Génère ou rédige une facture",        syntax:'invoice: [client] · [service] · [montant] · [conditions de paiement]'},
     ]
   },
   {
-    id: 'distribution', icon: '📡', badge: null,
-    name: '08 — Distribution',
-    sub: 'Lancement · Canaux · Partenariats · Growth',
-    cmds: [
-      { name: 'launch-plan', desc: "Plan de lancement avec canaux et timeline", syntax: 'launch-plan: [produit] · [date cible] · [audience primaire] · [budget]' },
-      { name: 'channels', desc: "Identifie et priorise les canaux de distribution", syntax: 'channels: [produit] · [ICP] · [budget] · [objectif: notoriété / leads / conversions]' },
-      { name: 'partenariats', desc: "Stratégie de partenariats", syntax: 'partenariats: [ton produit] · [partenaires potentiels] · [modèle: revshare / co-marketing / intégration]' },
-      { name: 'growth', desc: "Analyse et plan de croissance", syntax: 'growth: [métriques actuelles] · [objectif] · [leviers disponibles] · [contraintes budget / équipe]' },
+    icon:'📡', badge:null,
+    name:'08 — Distribution',
+    sub:'Lancement · Canaux · Partenariats · Growth',
+    cmds:[
+      {name:'launch-plan',  desc:"Plan de lancement complet",                       syntax:'launch-plan: [produit] · [date] · [audience] · [budget]'},
+      {name:'channels',     desc:"Priorise les canaux de distribution",             syntax:'channels: [produit] · [ICP] · [budget] · [objectif: notoriété/leads/conversions]'},
+      {name:'partenariats', desc:"Stratégie de partenariats",                      syntax:'partenariats: [ton produit] · [partenaires potentiels] · [modèle: revshare/co-mktg]'},
+      {name:'growth',       desc:"Analyse et plan de croissance",                  syntax:'growth: [métriques] · [objectif] · [leviers] · [contraintes budget/équipe]'},
     ]
   },
   {
-    id: 'support', icon: '🎧', badge: null,
-    name: '09 — Support',
-    sub: 'Tickets · FAQ · Onboarding Client · Escalations',
-    cmds: [
-      { name: 'ticket', desc: "Répond à un ticket support client", syntax: 'ticket: [coller le ticket] · [contexte produit] · [ton: formel / empathique]' },
-      { name: 'faq-gen', desc: "Génère une FAQ depuis des tickets récurrents", syntax: 'faq-gen: [coller les tickets ou questions fréquentes] · [format: court / détaillé]' },
-      { name: 'escalation', desc: "Gestion d'escalation client critique", syntax: 'escalation: [problème] · [impact client] · [ce qu\'on a tenté] · [prochaine étape]' },
-      { name: 'onboarding-client', desc: "Guide d'onboarding pour un nouveau client", syntax: 'onboarding-client: [client] · [produit] · [première semaine] · [objectif: activation rapide]' },
+    icon:'🎧', badge:null,
+    name:'09 — Support',
+    sub:'Tickets · FAQ · Onboarding Client · Escalations',
+    cmds:[
+      {name:'ticket',          desc:"Répond à un ticket support client",  syntax:'ticket: [coller le ticket] · [contexte produit] · [ton: formel/empathique]'},
+      {name:'faq-gen',         desc:"Génère une FAQ depuis des tickets",  syntax:'faq-gen: [coller tickets ou questions fréquentes] · [format: court/détaillé]'},
+      {name:'escalation',      desc:"Gestion escalation critique",       syntax:"escalation: [problème] · [impact client] · [ce qu'on a tenté] · [prochaine étape]"},
+      {name:'onboarding-client',desc:"Guide onboarding nouveau client",  syntax:'onboarding-client: [client] · [produit] · [première semaine] · [objectif: activation]'},
     ]
   },
 ];
 
 const COMMANDS = [
   {
-    num: 1, label: 'CORE SESSION', meta: 'Chaque session',
-    pattern: 'contexte → declare 1–3 priorités → go [batch tasks] → handoff',
-    cmds: [
-      { name: 'contexte', what: 'Charge CONTEXT.md + RECENT.md', output: 'État actuel résumé' },
-      { name: 'go [tâche]', what: 'Exécute immédiatement, zéro préambule', output: 'Output de la tâche' },
-      { name: 'handoff', what: 'Archive session: log décisions + update RECENT.md', output: 'Confirmation commit' },
-      { name: 'status', what: 'État santé du projet: avancé / bloqué / en cours', output: 'Rapport RAG' },
+    num:1, label:'CORE SESSION', meta:'Chaque session',
+    pattern:'<strong>contexte</strong> → 1–3 priorités → <strong>go [batch]</strong> → <strong>handoff</strong>',
+    cmds:[
+      {name:'contexte',   what:"Charge CONTEXT.md + RECENT.md",                         out:'État actuel résumé'},
+      {name:'go [tâche]', what:"Exécute immédiatement, zéro préambule",                 out:'Output de la tâche'},
+      {name:'handoff',    what:"Archive session : log décisions + update RECENT.md",    out:'Confirmation commit'},
+      {name:'status',     what:"Santé projet : avancé / bloqué / en cours",             out:'Rapport RAG'},
     ]
   },
   {
-    num: 2, label: 'CAPTURE', meta: 'Voice-first · Mobile',
-    pattern: '"idée: je veux ajouter une couche mémoire" → Claude structure → push GitHub → confirme',
-    cmds: [
-      { name: 'idée [texte]', what: 'Structure l\'idée + push GitHub via hub', output: '.md commité dans ton repo' },
-      { name: 'note [texte]', what: 'Capture brute, pas de structure, push immédiat', output: '.md commité' },
-      { name: 'interview-moi [X]', what: '5–8 questions sur tes angles morts', output: 'Q&A + clarté de décision' },
-      { name: 'décide [X]', what: 'Framework: options · trade-offs · recommandation', output: 'Doc de décision' },
+    num:2, label:'CAPTURE', meta:'Voice-first · Mobile',
+    pattern:'"<strong>idée:</strong> ajouter une couche mémoire vectorielle" → Claude structure → push GitHub → confirme',
+    cmds:[
+      {name:'idée [texte]',          what:"Structure l'idée + push GitHub",                 out:'.md commité dans ton repo'},
+      {name:'note [texte]',          what:"Capture brute, push immédiat",                   out:'.md commité'},
+      {name:'interview-moi [X]',     what:"5–8 questions sur tes angles morts",             out:"Q&A + clarté de décision"},
+      {name:'décide [X]',            what:"Framework : options · trade-offs · recommandation",out:'Doc de décision'},
     ]
   },
   {
-    num: 3, label: 'BUILD', meta: 'Tâches quotidiennes',
-    pattern: 'go: spec API auth + docs onboarding + revue auth.py → Claude produit les 3 en 1 passe',
-    cmds: [
-      { name: 'spec [sujet]', what: 'Rédige un PRD / spec avec objectifs et métriques', output: 'Spec Markdown' },
-      { name: 'docs [sujet]', what: 'Rédige la documentation technique', output: 'Doc Markdown' },
-      { name: 'revue [code]', what: 'Code review: sécurité, perf, exactitude', output: 'Rapport de review' },
-      { name: 'debug [problème]', what: 'Debug structuré: reproduire → isoler → corriger', output: 'Fix + explication' },
-      { name: 'test [composant]', what: 'Stratégie de test pour un composant', output: 'Plan de test' },
-      { name: 'architecture [X]', what: 'ADR: options · trade-offs · recommandation', output: 'Architecture decision' },
+    num:3, label:'BUILD', meta:'Tâches quotidiennes',
+    pattern:'<strong>go:</strong> spec API auth + docs onboarding + revue auth.py → Claude produit les 3 en 1 passe',
+    cmds:[
+      {name:'spec [sujet]',        what:"PRD / spec avec objectifs et métriques",   out:'Spec Markdown'},
+      {name:'docs [sujet]',        what:"Documentation technique",                  out:'Doc Markdown'},
+      {name:'revue [code]',        what:"Code review : sécurité, perf, exactitude", out:'Rapport de review'},
+      {name:'debug [problème]',    what:"Debug : reproduire → isoler → corriger",   out:'Fix + explication'},
+      {name:'test [composant]',    what:"Stratégie de test",                        out:'Plan de test'},
+      {name:'architecture [X]',    what:"ADR : options · trade-offs · recommandation",out:'Architecture decision'},
     ]
   },
   {
-    num: 4, label: 'PLAN', meta: 'Hebdomadaire',
-    pattern: 'standup → plan semaine → tâches → roadmap Q',
-    cmds: [
-      { name: 'standup', what: 'Génère le standup depuis l\'activité récente', output: 'Hier · Aujourd\'hui · Bloqueurs' },
-      { name: 'plan [semaine]', what: 'Planning sprint: scope, capacité, priorités', output: 'Plan sprint' },
-      { name: 'tâches', what: 'Affiche et met à jour la liste de tâches', output: 'TASKS.md rendu' },
-      { name: 'roadmap [horizon]', what: 'Met à jour ou crée la roadmap', output: 'Roadmap Markdown' },
-      { name: 'risques [X]', what: 'Évaluation des risques + mitigation', output: 'Registre de risques' },
+    num:4, label:'PLAN', meta:'Hebdomadaire',
+    pattern:'<strong>standup</strong> → <strong>plan semaine</strong> → <strong>tâches</strong> → <strong>roadmap Q</strong>',
+    cmds:[
+      {name:'standup',           what:"Standup depuis l'activité récente",           out:"Hier · Aujourd'hui · Bloqueurs"},
+      {name:'plan [semaine]',    what:"Planning sprint : scope, capacité, priorités", out:'Plan sprint'},
+      {name:'tâches',            what:"Affiche et met à jour la liste de tâches",     out:'TASKS.md rendu'},
+      {name:'roadmap [horizon]', what:"Met à jour ou crée la roadmap",               out:'Roadmap Markdown'},
+      {name:'risques [X]',       what:"Évaluation risques + mitigation",             out:'Registre de risques'},
     ]
   },
   {
-    num: 5, label: 'MEMORY', meta: 'Hygiène de session',
-    pattern: 'mémoire [décision importante] → sauvegardé dans le bon fichier',
-    cmds: [
-      { name: 'mémoire [X]', what: 'Sauvegarde fait / décision / contexte', output: 'Fichier mémoire mis à jour' },
-      { name: 'oublie [X]', what: 'Retire une entrée mémoire périmée', output: 'Mémoire mise à jour' },
-      { name: 'archive', what: 'Déplace le contexte complété vers ARCHIVE/', output: 'Commit archive' },
-      { name: 'rappel', what: 'Montre ce qui est chargé en mémoire cette session', output: 'Résumé mémoire' },
+    num:5, label:'MEMORY', meta:'Hygiène de session',
+    pattern:'<strong>mémoire [décision]</strong> → sauvegardé dans le bon fichier',
+    cmds:[
+      {name:'mémoire [X]',what:"Sauvegarde fait / décision / contexte", out:'Fichier mémoire mis à jour'},
+      {name:'oublie [X]', what:"Retire une entrée mémoire périmée",     out:'Mémoire mise à jour'},
+      {name:'archive',    what:"Déplace contexte complété vers ARCHIVE/",out:'Commit archive'},
+      {name:'rappel',     what:"Montre ce qui est chargé cette session", out:'Résumé mémoire'},
     ]
   },
   {
-    num: 6, label: 'OUTPUT', meta: 'Livrables',
-    pattern: 'rapport: Q2 ventes → document structuré → journal/rapports/',
-    cmds: [
-      { name: 'email [sujet]', what: 'Rédige un email complet', output: 'Email prêt à envoyer' },
-      { name: 'rapport [sujet]', what: 'Rapport structuré sur le sujet', output: 'Doc Markdown ou fichier' },
-      { name: 'slide [sujet]', what: 'Structure de présentation avec points clés', output: 'Outline de slides' },
-      { name: 'newsletter', what: 'Rédige la newsletter depuis l\'activité récente', output: 'Newsletter Markdown' },
-      { name: 'post [canal]', what: 'Post LinkedIn / X / blog depuis un sujet', output: 'Post prêt à publier' },
+    num:6, label:'OUTPUT', meta:'Livrables',
+    pattern:'<strong>rapport: Q2 ventes</strong> → document structuré → journal/rapports/',
+    cmds:[
+      {name:'email [sujet]',  what:"Email complet prêt à envoyer",        out:'Email'},
+      {name:'rapport [sujet]',what:"Rapport structuré",                   out:'Doc Markdown'},
+      {name:'slide [sujet]',  what:"Structure présentation + points clés",out:'Outline slides'},
+      {name:'newsletter',     what:"Newsletter depuis activité récente",  out:'Newsletter Markdown'},
+      {name:'post [canal]',   what:"Post LinkedIn / X / blog",            out:'Post prêt à publier'},
     ]
   },
   {
-    num: 7, label: 'AGENT PIPELINE', meta: 'Multi-agent',
-    pattern: 'métaobs → scan santé système → rapport anomalies → recommandations',
-    cmds: [
-      { name: 'plan [tâche complexe]', what: 'Planner: décompose en sous-tâches', output: 'Plan d\'exécution séquencé' },
-      { name: 'recherche [sujet]', what: 'Researcher: sources + synthèse', output: 'Brief avec sources' },
-      { name: 'build [spec]', what: 'Builder: exécute le plan produit', output: 'Code / doc / contenu' },
-      { name: 'métaobs', what: 'MetaObserver: analyse la santé du système', output: 'Rapport anomalies + recommandations' },
+    num:7, label:'AGENT PIPELINE', meta:'Multi-agent',
+    pattern:'<strong>métaobs</strong> → scan santé système → rapport anomalies → recommandations',
+    cmds:[
+      {name:'plan [tâche]',      what:"Planner : décompose en sous-tâches",   out:"Plan d'exécution séquencé"},
+      {name:'recherche [sujet]', what:"Researcher : sources + synthèse",      out:'Brief avec sources'},
+      {name:'build [spec]',      what:"Builder : exécute le plan",            out:'Code / doc / contenu'},
+      {name:'métaobs',           what:"MetaObserver : santé du système",      out:'Rapport anomalies + recommandations'},
     ]
   },
 ];
 
-const QUICKSTART_STEPS = [
+const QS_STEPS = [
   {
-    num: 1, title: 'Crée ton repo mémoire', time: '10 min',
-    body: `Crée un nouveau repo <strong>privé</strong> GitHub. Nom suggéré : <code>ma-memoire</code> ou <code>yoan-memory</code>.<br><br>Copie les 3 fichiers de <a href="https://github.com/yoanMaisonneuve/Enter-Game/tree/main/templates" target="_blank" style="color:var(--accent)">Enter-Game/templates/</a> dans ton nouveau repo :<br>• <strong>CONTEXT.md</strong> — mémoire opérationnelle (L1)<br>• <strong>RECENT.md</strong> — activité des 2–4 dernières semaines (L2)<br>• <strong>CLAUDE.md</strong> — contexte chargé automatiquement<br><br>Remplis les crochets <code>[...]</code> dans chaque fichier. 10–15 minutes. Sois concis — c'est de la mémoire de travail, pas un plan d'affaires.`,
-    code: 'git add . && git commit -m "init: enter-game memory setup" && git push',
-    check: '✓ Checkpoint : ton repo mémoire existe sur GitHub avec 3 fichiers remplis'
+    num:1, title:'Crée ton repo mémoire', time:'10 min',
+    body:`Crée un nouveau repo <strong>privé</strong> GitHub. Nom suggéré : <code style="background:rgba(0,154,222,0.08);color:#003A5D;padding:1px 5px">ma-memoire</code> ou <code style="background:rgba(0,154,222,0.08);color:#003A5D;padding:1px 5px">yoan-memory</code>.<br><br>Copie les 3 fichiers depuis <a href="https://github.com/yoanMaisonneuve/Enter-Game/tree/main/templates">Enter-Game/templates/</a> dans ton nouveau repo :<br><br>• <strong>CONTEXT.md</strong> — mémoire opérationnelle L1 (< 60 lignes)<br>• <strong>RECENT.md</strong> — activité des 2–4 dernières semaines<br>• <strong>CLAUDE.md</strong> — chargé automatiquement à chaque session<br><br>Remplis chaque <code style="background:rgba(0,154,222,0.08);color:#003A5D;padding:1px 5px">[crochet]</code> avec tes vraies informations. 10–15 minutes. Sois concis — c'est de la mémoire de travail, pas un business plan.`,
+    code:'git add . && git commit -m "init: enter-game memory setup" && git push',
+    check:'✓ Checkpoint : repo mémoire sur GitHub avec 3 fichiers remplis'
   },
   {
-    num: 2, title: 'Configure Claude', time: '10 min',
-    body: `<strong>Option A — Claude.ai Projects (recommandé)</strong><br>
-1. claude.ai → Projects → New Project<br>
-2. Dans Project Instructions, colle le contenu de ton CLAUDE.md<br>
-3. Upload CONTEXT.md et RECENT.md comme fichiers projet<br><br>
+    num:2, title:'Configure Claude', time:'10 min',
+    body:`<strong>Option A — Claude.ai Projects (recommandé)</strong><br>
+claude.ai → Projects → New Project → colle le contenu de ton CLAUDE.md dans les instructions → upload CONTEXT.md et RECENT.md comme fichiers projet<br><br>
 <strong>Option B — Cowork / Claude Desktop</strong><br>
-1. Place ton CLAUDE.md dans le dossier sélectionné<br>
-2. Claude le lit automatiquement au démarrage<br><br>
+Place ton CLAUDE.md dans le dossier de travail sélectionné — Claude le lit au démarrage.<br><br>
 <strong>Option C — API / Claude Code</strong><br>
-1. Place CLAUDE.md à la racine de ton projet<br>
-2. Claude Code le charge automatiquement`,
-    code: null,
-    check: '✓ Checkpoint : Claude sait qui tu es sans que tu lui expliques'
+Place CLAUDE.md à la racine du projet — Claude Code le charge automatiquement.`,
+    code:null,
+    check:'✓ Checkpoint : Claude sait qui tu es sans que tu lui expliques'
   },
   {
-    num: 3, title: 'Lance ta première session', time: '15 min',
-    body: `Ouvre Claude. Tape :`,
-    code: 'contexte\n\n→ Claude répond avec un résumé de ton état depuis CONTEXT.md + RECENT.md\n\nPuis :\n\ninterview-moi sur [la chose la plus importante sur laquelle tu travailles]\n\n→ Claude pose 5–8 questions. Réponds.\n\nTermine avec :\n\nhandoff\n\n→ Claude loggue les décisions de session.',
-    check: '✓ Checkpoint : tu as fait un cycle complet contexte → travail → handoff'
+    num:3, title:'Lance ta première session', time:'15 min',
+    body:`Ouvre Claude. Tape ces commandes dans l'ordre :`,
+    code:'contexte\n→ Claude répond avec un résumé depuis CONTEXT.md + RECENT.md\n\nSi Claude ne sait rien → tes fichiers ne sont pas chargés — revenir à l\'Étape 2\n\ninterview-moi sur [la chose la plus importante sur laquelle tu travailles]\n→ Claude pose 5–8 questions · réponds\n\nhandoff\n→ Claude loggue les décisions · te dit quoi mettre à jour dans RECENT.md',
+    check:"✓ Checkpoint : cycle complet — contexte → travail → handoff"
   },
   {
-    num: 4, title: 'Installe le hub mobile', time: '10 min',
-    body: `Le hub te permet de capturer des idées depuis ton téléphone en un bouton.<br><br>
-1. Ouvre <a href="https://yoanmaisonneuve.github.io/enter-game" target="_blank" style="color:var(--accent)">yoanmaisonneuve.github.io/enter-game</a><br>
-2. Onglet Config → entre ton token GitHub (permission <code>repo</code> write)<br>
-3. Teste la connexion<br>
-4. <strong>Android :</strong> Chrome → Menu → Ajouter à l'écran d'accueil<br>
-    <strong>iOS :</strong> Safari → Partager → Sur l'écran d'accueil<br><br>
-Tu peux maintenant capturer une idée en moins de 10 secondes depuis ton téléphone.`,
-    code: null,
-    check: '✓ Checkpoint : idée capturée depuis le téléphone → visible sur GitHub'
+    num:4, title:'Installe le hub mobile', time:'10 min',
+    body:`Le hub te permet de capturer des idées depuis ton téléphone en moins de 10 secondes.<br><br>
+<strong>1.</strong> Ouvre <a href="https://yoanmaisonneuve.github.io/enter-game">yoanmaisonneuve.github.io/enter-game</a><br>
+<strong>2.</strong> Onglet Config → entre ton token GitHub (permission <code style="background:rgba(0,154,222,0.08);color:#003A5D;padding:1px 5px">repo write</code>)<br>
+<strong>3.</strong> Android : Chrome → Menu → Ajouter à l'écran d'accueil<br>
+<strong>3.</strong> iOS : Safari → Partager → Sur l'écran d'accueil`,
+    code:null,
+    check:'✓ Checkpoint : idée capturée depuis le téléphone → visible sur GitHub'
   },
   {
-    num: 5, title: 'Le protocole quotidien', time: '5 min',
-    body: `Lis COMMANDS.md — Tiers 1 et 2 uniquement pour commencer.<br><br>
-N'essaie pas d'utiliser toutes les commandes d'un coup. Ajoute une nouvelle commande par semaine.`,
-    code: '# Matin\ncontexte → standup → go [priorité du jour]\n\n# En cours\nidée [ce qui te vient] → back to work\n\n# Fin de journée\nhandoff',
-    check: '✓ Checkpoint : tu as un rythme quotidien'
+    num:5, title:'Le protocole quotidien', time:'5 min',
+    body:`Lis COMMANDS.md — Tiers 1 et 2 uniquement pour commencer.<br><br>N'essaie pas d'utiliser toutes les commandes d'un coup. <strong>Une nouvelle commande par semaine.</strong>`,
+    code:'# Matin\ncontexte  → standup  → go [priorité du jour]\n\n# En cours\nidée [ce qui te vient]  → back to work\n\n# Fin de journée\nhandoff',
+    check:'✓ Checkpoint : tu as un rythme quotidien'
   },
 ];
 
-// ─── RENDER ─────────────────────────────────────────────────
+// ─── RENDER ──────────────────────────────────────────────────────
 
-function renderDomains(data, containerId) {
-  const container = document.getElementById(containerId);
-  data.forEach((domain, i) => {
-    const card = document.createElement('div');
-    card.className = 'domain-card';
-    card.innerHTML = `
-      <div class="domain-header" onclick="toggleDomain(this)">
-        <div class="domain-icon">${domain.icon}</div>
+function escA(s){ return (s||'').replace(/'/g,"\\'").replace(/"/g,'&quot;'); }
+
+function renderDomains(data, cId){
+  const c = document.getElementById(cId);
+  data.forEach(d => {
+    const el = document.createElement('div');
+    el.className = 'domain-card fade-in';
+    el.innerHTML = `
+      <div class="domain-toggle" onclick="toggleEl(this.parentElement)">
+        <div class="domain-icon-wrap">${d.icon}</div>
         <div class="domain-info">
-          <div class="domain-name">${domain.name}</div>
-          <div class="domain-sub">${domain.sub}</div>
+          <div class="domain-name">${d.name}</div>
+          <div class="domain-sub">${d.sub}</div>
         </div>
-        ${domain.badge ? `<div class="domain-badge">${domain.badge}</div>` : ''}
-        <div class="domain-count">${domain.cmds.length} cmd</div>
+        ${d.badge ? `<div class="domain-badge">${d.badge}</div>` : ''}
+        <div class="domain-count">${d.cmds.length} cmd</div>
         <div class="domain-chevron">▾</div>
       </div>
       <div class="domain-body">
         <div class="cmd-list">
-          ${domain.cmds.map(cmd => `
+          ${d.cmds.map(cmd=>`
             <div class="cmd-row">
-              <div style="flex:1">
+              <div class="cmd-left">
                 <div class="cmd-name">${cmd.name}</div>
                 <div class="cmd-desc">${cmd.desc}</div>
                 ${cmd.syntax ? `<div class="cmd-syntax">${cmd.syntax}</div>` : ''}
               </div>
-              <button class="copy-btn" onclick="copyCmd('${escapeAttr(cmd.syntax || cmd.name)}', this)">copy</button>
-            </div>
-          `).join('')}
+              <button class="copy-btn" onclick="copyTxt('${escA(cmd.syntax||cmd.name)}',this)">Copier</button>
+            </div>`).join('')}
         </div>
-      </div>
-    `;
-    container.appendChild(card);
+      </div>`;
+    c.appendChild(el);
   });
 }
 
-function renderCommands() {
-  const container = document.getElementById('commands-list');
-  COMMANDS.forEach(tier => {
-    const block = document.createElement('div');
-    block.className = 'tier-block';
-    block.innerHTML = `
-      <div class="tier-header" onclick="toggleTier(this)">
-        <div class="tier-num">${tier.num}</div>
-        <div class="tier-label">${tier.label}</div>
-        <div class="tier-meta">${tier.meta}</div>
+function renderCommands(){
+  const c = document.getElementById('commands-list');
+  COMMANDS.forEach(t => {
+    const el = document.createElement('div');
+    el.className = 'tier-card fade-in';
+    el.innerHTML = `
+      <div class="tier-toggle" onclick="toggleEl(this.parentElement)">
+        <div class="tier-num-badge">${t.num}</div>
+        <div class="tier-label">${t.label}</div>
+        <div class="tier-meta">${t.meta}</div>
+        <div class="tier-chevron">▾</div>
       </div>
       <div class="tier-body">
-        <div class="tier-pattern"><span>Pattern :</span> ${tier.pattern}</div>
+        <div class="tier-pattern">Exemple : ${t.pattern}</div>
         <div class="cmd-list">
-          ${tier.cmds.map(cmd => `
+          ${t.cmds.map(cmd=>`
             <div class="cmd-row">
-              <div style="flex:1">
+              <div class="cmd-left">
                 <div class="cmd-name">${cmd.name}</div>
                 <div class="cmd-desc">${cmd.what}</div>
-                <div class="cmd-syntax">→ ${cmd.output}</div>
+                <div class="cmd-syntax">→ ${cmd.out}</div>
               </div>
-              <button class="copy-btn" onclick="copyCmd('${escapeAttr(cmd.name)}', this)">copy</button>
-            </div>
-          `).join('')}
+              <button class="copy-btn" onclick="copyTxt('${escA(cmd.name)}',this)">Copier</button>
+            </div>`).join('')}
         </div>
-      </div>
-    `;
-    container.appendChild(block);
+      </div>`;
+    c.appendChild(el);
   });
 }
 
-function renderQuickstart() {
-  const container = document.getElementById('qs-steps');
-  QUICKSTART_STEPS.forEach(step => {
+function renderQS(){
+  const c = document.getElementById('qs-steps');
+  QS_STEPS.forEach(s => {
     const el = document.createElement('div');
-    el.className = 'qs-step';
+    el.className = 'qs-card fade-in';
     el.innerHTML = `
-      <div class="qs-step-num">${step.num}</div>
-      <div class="qs-step-title">${step.title}</div>
-      <div class="qs-step-time">${step.time}</div>
-      <div class="qs-step-body">${step.body}</div>
-      ${step.code ? `<div class="qs-code">${step.code.replace(/\n/g,'<br>')}</div>` : ''}
-      <div class="qs-check">${step.check}</div>
-    `;
-    container.appendChild(el);
+      <div class="qs-num">${s.num}</div>
+      <div class="qs-title">${s.title}</div>
+      <div class="qs-time">${s.time}</div>
+      <div class="qs-body">${s.body}</div>
+      ${s.code ? `<div class="qs-code">${s.code.replace(/\n/g,'<br>')}</div>` : ''}
+      <div class="qs-check">${s.check}</div>`;
+    c.appendChild(el);
   });
 }
 
-// ─── INTERACTIONS ────────────────────────────────────────────
+// ─── INTERACTIONS ─────────────────────────────────────────────────
 
-function toggleDomain(header) {
-  const card = header.parentElement;
+function toggleEl(card){
   card.classList.toggle('open');
 }
 
-function toggleTier(header) {
-  const block = header.parentElement;
-  block.classList.toggle('open');
-}
-
-function switchTab(name) {
-  document.querySelectorAll('.tab').forEach(t => t.classList.toggle('active', t.dataset.pane === name));
-  document.querySelectorAll('.pane').forEach(p => p.classList.toggle('active', p.id === 'pane-' + name));
+function switchTab(name){
+  document.querySelectorAll('.tab').forEach(t => t.classList.toggle('active', t.dataset.pane===name));
+  document.querySelectorAll('.pane').forEach(p => p.classList.toggle('active', p.id==='pane-'+name));
   document.getElementById('search-results').classList.remove('active');
   document.getElementById('search').value = '';
-  window.scrollTo(0, 0);
+  window.scrollTo(0,0);
 }
 
-document.querySelectorAll('.tab').forEach(tab => {
-  tab.addEventListener('click', () => switchTab(tab.dataset.pane));
-});
+document.querySelectorAll('.tab').forEach(t => t.addEventListener('click', () => switchTab(t.dataset.pane)));
 
-function copyCmd(text, btn) {
-  navigator.clipboard.writeText(text).then(() => {
-    btn.textContent = '✓';
-    btn.classList.add('copied');
-    setTimeout(() => { btn.textContent = 'copy'; btn.classList.remove('copied'); }, 1500);
+function copyTxt(text, btn){
+  navigator.clipboard.writeText(text).then(()=>{
+    btn.textContent='✓ Copié'; btn.classList.add('copied');
+    setTimeout(()=>{ btn.textContent='Copier'; btn.classList.remove('copied'); }, 1600);
   });
 }
 
-function escapeAttr(str) {
-  return (str || '').replace(/'/g, "\\'").replace(/"/g, '&quot;');
+// ─── SEARCH ───────────────────────────────────────────────────────
+
+const IDX = [];
+function buildIndex(){
+  SKILLS.forEach(d => d.cmds.forEach(c => IDX.push({src:d.name, name:c.name, desc:c.desc, syntax:c.syntax})));
+  SOLO.forEach(d  => d.cmds.forEach(c => IDX.push({src:d.name, name:c.name, desc:c.desc, syntax:c.syntax})));
+  COMMANDS.forEach(t => t.cmds.forEach(c => IDX.push({src:`T${t.num} ${t.label}`, name:c.name, desc:c.what, syntax:c.name})));
 }
 
-// ─── SEARCH ─────────────────────────────────────────────────
-
-const ALL_COMMANDS = [];
-
-function indexCommands() {
-  SKILLS.forEach(domain => {
-    domain.cmds.forEach(cmd => {
-      ALL_COMMANDS.push({ source: domain.name, name: cmd.name, desc: cmd.desc, syntax: cmd.syntax });
-    });
-  });
-  SOLO.forEach(dept => {
-    dept.cmds.forEach(cmd => {
-      ALL_COMMANDS.push({ source: dept.name, name: cmd.name, desc: cmd.desc, syntax: cmd.syntax });
-    });
-  });
-  COMMANDS.forEach(tier => {
-    tier.cmds.forEach(cmd => {
-      ALL_COMMANDS.push({ source: `T${tier.num} ${tier.label}`, name: cmd.name, desc: cmd.what, syntax: cmd.name });
-    });
-  });
-}
-
-document.getElementById('search').addEventListener('input', function() {
+document.getElementById('search').addEventListener('input', function(){
   const q = this.value.trim().toLowerCase();
-  const resultsEl = document.getElementById('search-results');
+  const resEl = document.getElementById('search-results');
   const listEl = document.getElementById('search-list');
-  const countEl = document.getElementById('search-count');
-
-  if (!q) {
-    resultsEl.classList.remove('active');
-    document.querySelectorAll('.pane').forEach(p => {
-      if (p.id === 'pane-' + document.querySelector('.tab.active').dataset.pane) p.classList.add('active');
-    });
-    return;
-  }
-
-  document.querySelectorAll('.pane').forEach(p => p.classList.remove('active'));
-  resultsEl.classList.add('active');
-
-  const results = ALL_COMMANDS.filter(c =>
-    c.name.toLowerCase().includes(q) ||
-    c.desc.toLowerCase().includes(q) ||
-    (c.syntax && c.syntax.toLowerCase().includes(q))
-  );
-
-  countEl.textContent = `${results.length} commande${results.length !== 1 ? 's' : ''} trouvée${results.length !== 1 ? 's' : ''}`;
-
-  listEl.innerHTML = results.map(r => `
-    <div class="search-item">
-      <div class="search-item-source">${r.source}</div>
+  const cntEl  = document.getElementById('search-count');
+  if(!q){ resEl.classList.remove('active'); document.querySelectorAll('.pane').forEach(p=>{ if(p.id==='pane-'+document.querySelector('.tab.active').dataset.pane) p.classList.add('active'); }); return; }
+  document.querySelectorAll('.pane').forEach(p=>p.classList.remove('active'));
+  resEl.classList.add('active');
+  const hits = IDX.filter(c => c.name.toLowerCase().includes(q)||c.desc.toLowerCase().includes(q)||(c.syntax&&c.syntax.toLowerCase().includes(q)));
+  cntEl.textContent = `${hits.length} commande${hits.length!==1?'s':''} trouvée${hits.length!==1?'s':''}`;
+  listEl.innerHTML = hits.map(r=>`
+    <div class="search-hit">
+      <div class="search-source">${r.src}</div>
       <div style="flex:1">
-        <div class="search-item-name">${r.name}</div>
-        <div class="search-item-desc">${r.desc}</div>
-        ${r.syntax ? `<div class="cmd-syntax" style="margin-top:4px">${r.syntax}</div>` : ''}
+        <div class="cmd-name">${r.name}</div>
+        <div class="cmd-desc">${r.desc}</div>
+        ${r.syntax?`<div class="cmd-syntax" style="margin-top:5px">${r.syntax}</div>`:''}
       </div>
-      <button class="copy-btn" onclick="copyCmd('${escapeAttr(r.syntax || r.name)}', this)">copy</button>
-    </div>
-  `).join('');
+      <button class="copy-btn" onclick="copyTxt('${escA(r.syntax||r.name)}',this)">Copier</button>
+    </div>`).join('');
 });
 
-// ─── INIT ────────────────────────────────────────────────────
-
+// ─── INIT ─────────────────────────────────────────────────────────
 renderDomains(SKILLS, 'skills-grid');
-renderDomains(SOLO, 'solo-grid');
+renderDomains(SOLO,   'solo-grid');
 renderCommands();
-renderQuickstart();
-indexCommands();
+renderQS();
+buildIndex();
 </script>
 </body>
 </html>
