@@ -1,0 +1,170 @@
+# SHORTCUTS_REGISTRY.md
+## Mon Registre de Commandes Courtes / My Shorthand Registry
+
+> Ce fichier est lu automatiquement depuis ton CLAUDE.md.
+> Ajoute, modifie, supprime des entrées librement.
+> C'est ton langage personnel avec Claude.
+
+*Dernière mise à jour : [YYYY-MM-DD]*
+
+---
+
+## COMMENT ÇA FONCTIONNE / HOW IT WORKS
+
+**Syntaxe :**
+- `Git/[nom]` → switch de contexte vers ce projet (charge le CLAUDE.md correspondant)
+- `/[commande]` → exécute la tâche définie ci-dessous
+- `/[commande]: [params]` → tâche avec paramètres additionnels
+
+**Règle pour Claude :**
+Si une commande n'est pas dans ce registre → demander :
+"Je ne reconnais pas `/[commande]`. Veux-tu que je l'ajoute au registre ?"
+
+---
+
+## PROJECTS / PROJETS
+
+*(Remplis avec tes projets actifs. Un projet = une entrée.)*
+
+```
+Git/Enter-Game:
+  file: Enter-Game/Claude_init/CLAUDE.md
+  description: Protocole IA open-source, skills library, solofounder OS
+
+Git/Blueprint:
+  file: [chemin vers ton CLAUDE.md Blueprint]
+  description: [description en 1 ligne]
+
+Git/[ton-projet]:
+  file: [chemin/vers/CLAUDE.md]
+  description: [description]
+```
+
+---
+
+## DAILY TASKS / TÂCHES QUOTIDIENNES
+
+*(Les tâches que tu fais souvent. Ajoute les tiennes.)*
+
+```
+/vidéo du jour:
+  action: Chercher les meilleures vidéos IA publiées aujourd'hui ou hier (YouTube, X, newsletters)
+  output: Liste numérotée — titre + URL + 1 ligne de contexte + pourquoi ça compte
+  destination: Créer un fichier journal/daily/YYYY-MM-DD-videos.md OU afficher dans le chat si pas de dossier journal
+  description: Top vidéos IA du jour
+
+/news IA:
+  action: Chercher les news IA importantes des dernières 24h
+  sources: Anthropic blog, OpenAI blog, HackerNews, X/Twitter AI, TechCrunch
+  output: Briefing — 5 à 10 items, format : [TITRE] · [SOURCE] · [résumé 2 lignes] · [impact pour toi]
+  destination: journal/daily/YYYY-MM-DD-news.md OU chat si pas de journal
+  description: Briefing IA du matin
+
+/semaine IA:
+  action: Synthèse des 5 événements IA les plus importants des 7 derniers jours
+  output: Doc avec titre, ce qui s'est passé, et ce que ça change
+  destination: journal/weekly/YYYY-WNN-recap.md OU chat
+  description: Recap hebdomadaire IA
+
+/standup:
+  action: Générer le standup du jour depuis l'activité récente chargée en contexte
+  output: Format 3 lignes — Hier · Aujourd'hui · Bloqueurs
+  destination: Chat (copier-coller dans Slack/Teams)
+  description: Daily standup
+
+/handoff:
+  action: Archiver la session — log des décisions, update RECENT.md, confirmer commit
+  output: Résumé de session + confirmation
+  destination: RECENT.md (update) + GitHub commit si demandé
+  description: Fin de session, archivage mémoire
+```
+
+---
+
+## WEEKLY TASKS / TÂCHES HEBDOMADAIRES
+
+```
+/revue semaine:
+  action: Faire le bilan de la semaine depuis RECENT.md et les notes de session
+  output: Wins · Misses · Décisions prises · Priorités semaine prochaine
+  destination: Chat
+  description: Revue hebdomadaire
+
+/plan semaine:
+  action: Planifier la semaine à venir depuis les tâches en cours et les priorités
+  output: Top 3 priorités + plan par jour (lundi-vendredi)
+  destination: Chat
+  description: Planning hebdomadaire
+```
+
+---
+
+## ON-DEMAND TASKS / TÂCHES À LA DEMANDE
+
+```
+/rapport: [sujet]:
+  action: Écrire un rapport sur le sujet fourni
+  output: Document structuré (intro + sections + conclusion)
+  destination: journal/rapports/YYYY-MM-DD-[sujet].md
+  description: Rapport structuré à la demande
+
+/résumé: [contenu]:
+  action: Résumer le contenu fourni (coller un article, des notes, un transcript)
+  output: 3 lignes clés + 1 paragraphe si demandé
+  destination: Chat
+  description: Résumé rapide
+
+/idée: [texte]:
+  action: Structurer l'idée + push vers GitHub (repo configuré dans CLAUDE.md)
+  output: Fichier .md créé dans ideas/YYYY-MM-DD-[tag].md
+  destination: GitHub
+  description: Capture d'idée vers GitHub
+
+/interview: [sujet]:
+  action: Poser 5-8 questions sur ce que je n'ai pas considéré
+  output: Questions dans le chat, attendre mes réponses
+  destination: Chat
+  description: Interview pré-décision
+```
+
+---
+
+## COMMENT AJOUTER UNE ENTRÉE / HOW TO ADD AN ENTRY
+
+**Modèle / Template :**
+```
+/[ma-commande]:
+  action: [ce que Claude fait — en 1–2 phrases]
+  sources: [où Claude cherche l'info, si applicable]
+  output: [format du résultat]
+  destination: [où ça va : chat / fichier / GitHub]
+  description: [1 ligne pour l'index]
+```
+
+**Exemple personnel :**
+```
+/clients du jour:
+  action: Depuis les notes chargées en contexte, résumer les interactions clients d'aujourd'hui
+  output: Liste des clients contactés + état + prochaine étape
+  destination: Chat
+  description: Résumé client quotidien
+```
+
+**Règle :** si tu dis une commande plus de 3 fois, crée une entrée dans ce registre.
+
+---
+
+## COMMANDES INTÉGRÉES (pas dans le registre)
+
+Ces commandes fonctionnent toujours, sans être dans le registre :
+
+```
+contexte    → charge CONTEXT.md + RECENT.md, résume l'état actuel
+go [tâche]  → exécute immédiatement, sans préambule
+handoff     → archive la session
+mémoire [X] → sauvegarder un fait en mémoire
+```
+
+---
+
+*SHORTCUTS_REGISTRY.md — personnalise librement · v1.0 · Enter-Game*
