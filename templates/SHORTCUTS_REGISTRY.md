@@ -102,6 +102,27 @@ Git/[ton-projet]:
 ## ON-DEMAND TASKS / TÂCHES À LA DEMANDE
 
 ```
+/projet: [nom]:
+  action: |
+    1. Créer la structure de dossier locale :
+       openClaude/[nom]/
+       openClaude/[nom]/Claude_init/CLAUDE.md     ← mémoire opérationnelle
+       openClaude/[nom]/Claude_init/claudetodo.md ← tâches en cours
+       openClaude/[nom]/README.md                 ← description du projet
+    2. Remplir CLAUDE.md avec le template projet :
+       - Qui est Yoan / style de travail (copié depuis Enter-Game/CLAUDE.md)
+       - Ce qu'est le projet (vision, mantra, public cible)
+       - Structure du repo (à remplir au fur et à mesure)
+       - Décisions prises (tableau vide)
+       - Ce qui manque encore (à remplir)
+       - Shorthand protocol (lien vers registre Enter-Game)
+    3. Remplir claudetodo.md avec une entrée initiale "Setup du projet"
+    4. Ajouter l'entrée Git/[nom] dans Enter-Game/templates/SHORTCUTS_REGISTRY.md
+    5. Confirmer : "✓ Projet [nom] créé — structure prête, Git/[nom] actif"
+  output: Dossier projet initialisé + CLAUDE.md + claudetodo.md + README.md + raccourci Git/[nom]
+  destination: openClaude/[nom]/ (local)
+  description: Crée un nouveau projet avec structure standard et l'enregistre dans le registre
+
 /rapport: [sujet]:
   action: Écrire un rapport sur le sujet fourni
   output: Document structuré (intro + sections + conclusion)
