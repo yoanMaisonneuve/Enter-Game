@@ -152,6 +152,7 @@ Git/askio1      → robot tripode askio1_v2
 /news IA           → briefing IA 24h → journal/daily/
 /semaine IA        → recap 7 jours → journal/weekly/
 /standup           → standup quotidien → chat
+/projet: [nom]     → crée dossier + CLAUDE.md + claudetodo.md + README + enregistre Git/[nom]
 /rapport: [X]      → rapport structuré → journal/rapports/
 /forsight: [texte] → reformule + numérote F[NNN] + push Forsight + log mémoire Blueprint
 ```
