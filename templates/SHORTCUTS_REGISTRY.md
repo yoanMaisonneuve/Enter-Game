@@ -32,8 +32,12 @@ Git/Enter-Game:
   description: Protocole IA open-source, skills library, solofounder OS
 
 Git/Blueprint:
-  file: [chemin vers ton CLAUDE.md Blueprint]
-  description: [description en 1 ligne]
+  file: Blueprint-memory/Claude_init/CLAUDE.md
+  description: Blueprint memory system — mémoire hiérarchique scalable
+
+Git/askio1-llm:
+  file: askio1-llm/Claude_init/CLAUDE.md
+  description: LLM visionnaire fine-tuné sur corpus Forsight — 3 phases (foundations → dataset → fine-tune)
 
 Git/[ton-projet]:
   file: [chemin/vers/CLAUDE.md]
