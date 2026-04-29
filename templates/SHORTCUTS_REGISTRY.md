@@ -39,6 +39,10 @@ Git/askio1-llm:
   file: askio1-llm/Claude_init/CLAUDE.md
   description: LLM visionnaire fine-tuné sur corpus Forsight — 3 phases (foundations → dataset → fine-tune)
 
+Git/the-grid:
+  file: the-grid/Claude_init/CLAUDE.md
+  description: Réseau d'intelligence directionnelle — 14 secteurs 3D, agents, newsletter, publication d'impact
+
 Git/[ton-projet]:
   file: [chemin/vers/CLAUDE.md]
   description: [description]
