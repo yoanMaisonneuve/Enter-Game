@@ -153,7 +153,7 @@ Git/askio1      → robot tripode askio1_v2
 /semaine IA        → recap 7 jours → journal/weekly/
 /standup           → standup quotidien → chat
 /rapport: [X]      → rapport structuré → journal/rapports/
-/forsight: [texte] → reformule + numérote F[NNN] + push → Forsight/ + github.com/yoanMaisonneuve/Forsight
+/forsight: [texte] → reformule + numérote F[NNN] + push Forsight + log mémoire Blueprint
 ```
 
 **Convention Forsight :**
@@ -162,6 +162,10 @@ Git/askio1      → robot tripode askio1_v2
 - Naming : `F[NNN]-[YYYY-MM-DD]-[description-kebab-case].md`
 - Dernier numéro utilisé : F002 (2026-04-30)
 - Contenu fichier : idée brute originale + version publiée
+- Logging mémoire : chaque /forsight ajoute 1 ligne dans Blueprint-memory/memory/[chemin-jour]/INDEX-jour.md
+  - Chemin calculé depuis date du jour, sans charger l'arbre complet
+  - Type CAPTURE dans le tableau compact
+  - Push via GitHub API (même token)
 
 ---
 
