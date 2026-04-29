@@ -139,10 +139,18 @@ Git/[ton-projet]:
        Contenu : idée brute originale (section "Idée brute") + version publiée (section "Version publiée")
     4. Sauvegarder localement dans Forsight/
     5. Push vers github.com/[ton-username]/Forsight via git ou API GitHub
-    6. Confirmer : "✓ F[NNN] enregistrée — [titre court]"
-  output: Post LinkedIn reformulé dans le chat + fichier .md créé + push GitHub confirmé
-  destination: Forsight/ (local) + github.com/[ton-username]/Forsight (GitHub public)
-  description: Capture, reformule et publie une foresight datée comme marqueur de track record
+    6. Logger dans Blueprint-memory (lightweight, sans charger l'arbre mémoire) :
+       - Chemin cible : memory/YYYY/QN/MM-mois/WNN/YYYY-MM-DD/
+         (calculé depuis la date du jour — ex: 2026-04-29 → 2026/Q2/04-avril/W18/2026-04-29/)
+       - Si INDEX-jour.md existe → ajouter 1 ligne au tableau des sessions
+       - Si INDEX-jour.md n'existe pas → créer le fichier minimaliste avec cette première entrée
+       - Format de la ligne : | S→ | /forsight [titre court] | F[NNN] créée + push Forsight | CAPTURE |
+       - Push via API GitHub (Blueprint-memory repo, même token)
+       - Pas de chargement de l'arbre mémoire complet — juste lecture/écriture du fichier jour
+    7. Confirmer : "✓ F[NNN] enregistrée — [titre court] · mémoire loggée"
+  output: Post LinkedIn reformulé dans le chat + fichier .md créé + push Forsight + entrée mémoire
+  destination: Forsight/ (local) + github.com/yoanMaisonneuve/Forsight (public) + Blueprint-memory/memory/ (privé)
+  description: Capture, reformule, publie une foresight datée ET la logue dans la mémoire durable
 ```
 
 ---
