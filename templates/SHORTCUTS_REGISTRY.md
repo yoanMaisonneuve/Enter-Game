@@ -43,6 +43,10 @@ Git/the-grid:
   file: the-grid/Claude_init/CLAUDE.md
   description: Réseau d'intelligence directionnelle — 14 secteurs 3D, agents, newsletter, publication d'impact
 
+Git/chantier-3d:
+  file: chantier-3d/Claude_init/CLAUDE.md
+  description: Plateforme gestion chantier — photo→rapport, carte territoire, approvisionnement, soumissions
+
 Git/[ton-projet]:
   file: [chemin/vers/CLAUDE.md]
   description: [description]
