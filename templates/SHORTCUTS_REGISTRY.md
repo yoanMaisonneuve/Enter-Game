@@ -125,6 +125,24 @@ Git/[ton-projet]:
   output: Questions dans le chat, attendre mes réponses
   destination: Chat
   description: Interview pré-décision
+
+/forsight: [texte brut]:
+  action: |
+    1. Déterminer le prochain numéro F — lire le dossier Forsight/ local ou le repo GitHub
+       pour trouver le dernier numéro et incrémenter (F001 → F002 → F003...)
+    2. Reformuler le texte brut (voice-to-text, notes, idée rapide) en post LinkedIn publiable :
+       - Titre accrocheur avec numéro et thème
+       - Corps 200–400 mots, ton direct, structure : problème → insight → implication
+       - Dernière ligne = formule transmissible (italique)
+       - Hashtags : #keepTrackFeedChangeByForsight + 3-4 hashtags pertinents
+    3. Créer le fichier F[NNN]-[YYYY-MM-DD]-[description-compacte-en-kebab-case].md
+       Contenu : idée brute originale (section "Idée brute") + version publiée (section "Version publiée")
+    4. Sauvegarder localement dans Forsight/
+    5. Push vers github.com/[ton-username]/Forsight via git ou API GitHub
+    6. Confirmer : "✓ F[NNN] enregistrée — [titre court]"
+  output: Post LinkedIn reformulé dans le chat + fichier .md créé + push GitHub confirmé
+  destination: Forsight/ (local) + github.com/[ton-username]/Forsight (GitHub public)
+  description: Capture, reformule et publie une foresight datée comme marqueur de track record
 ```
 
 ---

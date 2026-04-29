@@ -148,12 +148,20 @@ Git/askio1      → robot tripode askio1_v2
 
 **Raccourcis tâches actifs :**
 ```
-/vidéo du jour  → top vidéos IA du jour → journal/daily/
-/news IA        → briefing IA 24h → journal/daily/
-/semaine IA     → recap 7 jours → journal/weekly/
-/standup        → standup quotidien → chat
-/rapport: [X]   → rapport structuré → journal/rapports/
+/vidéo du jour     → top vidéos IA du jour → journal/daily/
+/news IA           → briefing IA 24h → journal/daily/
+/semaine IA        → recap 7 jours → journal/weekly/
+/standup           → standup quotidien → chat
+/rapport: [X]      → rapport structuré → journal/rapports/
+/forsight: [texte] → reformule + numérote F[NNN] + push → Forsight/ + github.com/yoanMaisonneuve/Forsight
 ```
+
+**Convention Forsight :**
+- Repo GitHub : github.com/yoanMaisonneuve/Forsight (public)
+- Dossier local : openClaude/Forsight/
+- Naming : `F[NNN]-[YYYY-MM-DD]-[description-kebab-case].md`
+- Dernier numéro utilisé : F002 (2026-04-30)
+- Contenu fichier : idée brute originale + version publiée
 
 ---
 
